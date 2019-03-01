@@ -2,8 +2,10 @@ package com.peterparameter.troper
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.beust.klaxon.Klaxon
 import com.peterparameter.troper.activities.ArticleViewActivity
 import com.peterparameter.troper.utils.*
+import org.http4k.core.Uri
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.*
 
@@ -15,14 +17,15 @@ class MainActivity : AppCompatActivity() {
 }
 
 class MainView : AnkoComponent<MainActivity> {
-    private val dummyUrl = android.net.Uri.parse("https://tvtropes.org/pmwiki/pmwiki.php/Main/RestingRecovery")
+    private val dummyUrl = Uri.of("https://tvtropes.org/pmwiki/pmwiki.php/Main/RestingRecovery")
 
     override fun createView(ui: AnkoContext<MainActivity>) = ui.apply {
         verticalLayout {
             button("Load ArticleWrapper") {
                 onClick {
-                    val article = getParsedArticle(dummyUrl)
-                    val intent = intentFor<ArticleViewActivity>("article" to article).singleTop()
+                    val article = TropesApi.getParsedArticle(dummyUrl)
+                    val articleJson = Klaxon().toJsonString(article)
+                    val intent = intentFor<ArticleViewActivity>("articleJson" to articleJson).singleTop()
                     ui.ctx.startActivity(intent)
                 }
             }

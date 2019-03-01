@@ -4,6 +4,9 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'org.jetbrains.kotlin.android.extensions'
+
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -35,7 +38,9 @@ android {
     androidExtensions {
         experimental = true
     }
-
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 def anko_version='0.10.8'
@@ -80,5 +85,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-html-jvm:$kotlinx_html_version"
     implementation "com.github.fcannizzaro:ksoup:$ksoup_version"
     implementation 'org.jsoup:jsoup:1.10.3'
+
+    implementation 'com.beust:klaxon:5.0.1'
 
 }
