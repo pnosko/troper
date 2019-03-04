@@ -21,7 +21,7 @@ object TropesApi {
 
     private suspend fun fetchAndParseArticle(url: Uri): Try<ArticleInfo> {
         val htmlResponse = fetchArticleAsync(url).await()
-        return htmlResponse.map(Parser::parse)
+        return htmlResponse.flatMap { Parser.parse(it).toTry() }
     }
 
     private fun fetchArticleAsync(url: Uri): Deferred<Try<String>> = bg {
