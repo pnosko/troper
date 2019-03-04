@@ -5,6 +5,9 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import arrow.core.getOrElse
 import arrow.core.toOption
+import arrow.instances.option.traverse.sequence
+import arrow.instances.option.applicative.*
+import com.beust.klaxon.Klaxon
 import com.peterparameter.troper.activities.ArticleViewActivity
 import com.peterparameter.troper.utils.TropesApi
 import kotlinx.coroutines.runBlocking
@@ -24,9 +27,10 @@ class TropesWebClient : WebViewClient() {
         val shouldOverride = url.map { isTropesUrl(it) }.getOrElse { false }
         if (shouldOverride) {
             runBlocking {
-                val article = url.map{TropesApi.getParsedArticle(it)}
-                val intent = article.map {
-                    AnkoInternals.createIntent(view?.context!!, ArticleViewActivity::class.java, arrayOf("article" to it))
+                val article = url.map { TropesApi.getParsedArticle(it).await() }
+                val articleJson = Klaxon().toJsonString(article)
+                val intent = articleJson.map {
+                    AnkoInternals.createIntent(view?.context!!, ArticleViewActivity::class.java, arrayOf("articleJson" to it))
                 }
                 intent.map{view!!.context.startActivity(it)}
             }

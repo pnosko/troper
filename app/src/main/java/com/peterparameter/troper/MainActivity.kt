@@ -23,7 +23,7 @@ class MainView : AnkoComponent<MainActivity> {
         verticalLayout {
             button("Load ArticleWrapper") {
                 onClick {
-                    val article = TropesApi.getParsedArticle(dummyUrl)
+                    val article = TropesApi.getParsedArticle(dummyUrl).await()
                     val articleJson = Klaxon().toJsonString(article)
                     val intent = intentFor<ArticleViewActivity>("articleJson" to articleJson).singleTop()
                     ui.ctx.startActivity(intent)

@@ -74,6 +74,7 @@ dependencies {
     implementation "io.arrow-kt:arrow-typeclasses:$arrow_version"
     implementation "io.arrow-kt:arrow-effects:$arrow_version" //optional
     implementation "io.arrow-kt:arrow-optics:$arrow_version" //optional
+    implementation "io.arrow-kt:arrow-effects-kotlinx-coroutines:$arrow_version" //optional
 
     // HTTP4K
     implementation "org.http4k:http4k-core:$http4k_version" //optional
