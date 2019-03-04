@@ -1,13 +1,11 @@
 package com.peterparameter.troper
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.beust.klaxon.Klaxon
-import com.peterparameter.troper.activities.ArticleViewActivity
-import com.peterparameter.troper.utils.*
+import android.support.v7.app.AppCompatActivity
+import com.peterparameter.troper.utils.loadNewArticle
 import org.http4k.core.Uri
 import org.jetbrains.anko.*
-import org.jetbrains.anko.sdk27.coroutines.*
+import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,20 +14,16 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-class MainView : AnkoComponent<MainActivity> {
+class MainView : AnkoComponent<MainActivity>, AnkoLogger {
     private val dummyUrl = Uri.of("https://tvtropes.org/pmwiki/pmwiki.php/Main/RestingRecovery")
 
     override fun createView(ui: AnkoContext<MainActivity>) = ui.apply {
         verticalLayout {
-            button("Load ArticleWrapper") {
+            button("Load Article") {
                 onClick {
-                    val article = TropesApi.getParsedArticle(dummyUrl).await()
-                    val articleJson = Klaxon().toJsonString(article)
-                    val intent = intentFor<ArticleViewActivity>("articleJson" to articleJson).singleTop()
-                    ui.ctx.startActivity(intent)
+                    loadNewArticle(dummyUrl, ui.ctx)
                 }
             }
         }
     }.view
-
 }

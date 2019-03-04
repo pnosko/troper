@@ -13,9 +13,10 @@ object Parser {
     fun parse(rawArticle: String): ArticleInfo {
         val ks = Ksoup(rawArticle)
         val parsed = ks.from<ArticleWrapper>(ArticleWrapper())
+        println(parsed.title)
         parsed.element.toOption().map{removeBadElems(it)}
-        val content = wrap(parsed.article.element?.html().orEmpty())
-        val subpages = parsed.subpages.map{ArticleLink(it.title!!, it.url!!)}
+        val content = wrap(parsed.title!!, parsed.article.element?.html()!!)
+        val subpages = parsed.subpages.map { ArticleLink(it.title!!, it.url!!) }
         return ArticleInfo(parsed.title.orEmpty(), content, subpages)
     }
 
@@ -36,9 +37,13 @@ object Parser {
         return text.replace("&nbsp;", "")
     }
 
-    fun wrap(article: String): String {
+    fun wrap(title: String, article: String): String {
         return createHTMLDocument().html {
+            head {
+                title(title)
+            }
             body {
+                header { h1 { +title }}
                 unsafe { raw(removeNBSP(article)) }
             }
         }.serialize()
