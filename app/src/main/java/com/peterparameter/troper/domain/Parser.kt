@@ -12,19 +12,24 @@ import kotlinx.html.*
 import org.jsoup.nodes.Element
 
 object Parser {
-    fun parse(rawArticle: String): Option<ArticleInfo> {
-        val ks = Ksoup(rawArticle)
-        val article = binding {
+    fun parse(rawArticle: String, rawScript: String): Option<ArticleInfo> {
+        val ks = Ksoup(stripRaw(rawArticle))
+        return binding {
             val parsed = Try { ks.from<ArticleWrapper>(ArticleWrapper()) }.toOption().bind()
-            val element = parsed.element.toOption().bind()
-            val htmlContent = element.html().toOption().bind()
             val title = parsed.title.toOption().bind()
+            println(title)
+            val element = parsed.article.element.toOption().bind()
+            val htmlContent = element.html().toOption().bind()
+
             removeBadElems(element)
-            val content = wrap(title, htmlContent)
+            val content = wrap(title, htmlContent, rawScript)
             val subpages = parsed.subpages.map(::createLinks).flatten()
             ArticleInfo(title, content, subpages)
         }
-        return article
+    }
+
+    private fun stripRaw(article: String): String {
+        return article.replace("<hr>", "")
     }
 
     private fun createLinks(subpage: ArticleWrapper.Subpage): Option<ArticleLink> {
@@ -37,7 +42,7 @@ object Parser {
 
     private fun removeBadElems(elem: Element) {
         val tags = listOf("hr", "meta", "input")
-        val classes = listOf("proper-ad-unit")
+        val classes = listOf("proper-ad-unit", "mobile-ad")
         tags.forEach{elem.getElementsByTag(it)?.remove()}
         classes.forEach{elem.getElementsByClass(it)?.remove()}
     }
@@ -46,7 +51,7 @@ object Parser {
         return text.replace("&nbsp;", "")
     }
 
-    private fun wrap(title: String, article: String): String {
+    private fun wrap(title: String, article: String, rawScript: String): String {
         return createHTMLDocument().html {
             head {
                 title(title)
@@ -54,6 +59,9 @@ object Parser {
             body {
                 header { h1 { +title }}
                 unsafe { raw(removeNBSP(article)) }
+                script(ScriptType.textJavaScript) {
+                    unsafe { raw(rawScript) }
+                }
             }
         }.serialize()
     }

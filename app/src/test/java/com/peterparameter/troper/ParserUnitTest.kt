@@ -1,6 +1,7 @@
 package com.peterparameter.troper
 
 import com.peterparameter.troper.domain.Parser
+import com.peterparameter.troper.utils.getOrThrow
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -14,13 +15,13 @@ import java.io.File
 class ParserUnitTest {
     @Test
     fun parse_notNull() {
-        val parsed = Parser.parse(TestArticle.content)
+        val parsed = Parser.parse(TestArticle.content).getOrThrow()
         assertNotNull(parsed)
     }
 
     @Test
     fun parseAndWrapAndSave() {
-        val wrapped = Parser.parse(TestArticle.content)
+        val wrapped = Parser.parse(TestArticle.content).getOrThrow()
         File("doc.html").writeText(wrapped.content)
         assertEquals(2, wrapped.subpages.size)
     }

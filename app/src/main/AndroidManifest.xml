@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.ArticleViewActivity"/>
+        <activity android:name=".activities.ArticleListActivity"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 
