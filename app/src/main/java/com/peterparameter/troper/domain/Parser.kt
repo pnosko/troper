@@ -59,9 +59,9 @@ object Parser {
             body {
                 header { h1 { +title }}
                 unsafe { raw(removeNBSP(article)) }
-                script(ScriptType.textJavaScript) {
-                    unsafe { raw(rawScript) }
-                }
+//                script(ScriptType.textJavaScript) {
+//                    unsafe { raw(rawScript) }
+//                }
             }
         }.serialize()
     }

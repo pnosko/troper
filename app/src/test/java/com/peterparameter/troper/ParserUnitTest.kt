@@ -1,7 +1,10 @@
 package com.peterparameter.troper
 
+import com.peterparameter.troper.domain.ArticleInfo
 import com.peterparameter.troper.domain.Parser
+import com.peterparameter.troper.utils.deserializeList
 import com.peterparameter.troper.utils.getOrThrow
+import com.peterparameter.troper.utils.serialize
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -15,14 +18,25 @@ import java.io.File
 class ParserUnitTest {
     @Test
     fun parse_notNull() {
-        val parsed = Parser.parse(TestArticle.content).getOrThrow()
+        val parsed = createExampleArticle()
         assertNotNull(parsed)
     }
 
     @Test
     fun parseAndWrapAndSave() {
-        val wrapped = Parser.parse(TestArticle.content).getOrThrow()
+        val wrapped = createExampleArticle()
         File("doc.html").writeText(wrapped.content)
         assertEquals(2, wrapped.subpages.size)
+    }
+
+    private fun createExampleArticle(): ArticleInfo = Parser.parse(TestArticle.content, "").getOrThrow()
+
+    @Test
+    fun serializeDeserializeList() {
+        val list = arrayOf(createExampleArticle())
+        val ser = serialize(list)
+        val des = deserializeList<ArticleInfo>(ser).getOrThrow()
+
+        assertEquals(list.size, des.size)
     }
 }

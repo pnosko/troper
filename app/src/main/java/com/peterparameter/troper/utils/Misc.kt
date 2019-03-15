@@ -5,9 +5,7 @@ import android.support.v4.app.Fragment
 import arrow.core.*
 import arrow.instances.`try`.monad.binding
 import com.beust.klaxon.Klaxon
-import com.peterparameter.troper.R
-import com.peterparameter.troper.activities.ArticleListActivity
-import com.peterparameter.troper.activities.ArticleViewActivity
+import com.peterparameter.troper.activities.ArticlesActivity
 import org.http4k.core.Uri
 import org.jetbrains.anko.*
 
@@ -20,10 +18,10 @@ inline fun <reified T : Fragment> instanceOf(vararg params: Pair<String, Any>)
 
 suspend fun loadNewArticle(url: Uri, ctx: Context) {
     val article = TropesApi.getParsedArticle(url).await()
-    println(article)
     val intent = binding {
-        val articleJson = serialize(listOf(article.bind()))
-        ctx.intentFor<ArticleListActivity>("articles" to articleJson).singleTop()
+        val articles = arrayOf(article.bind())
+        val articlesJson = serialize(articles)
+        ctx.intentFor<ArticlesActivity>("articles" to articlesJson).singleTop()
     }
     intent.fold(
         { e -> ctx.toast(e.message!!) },
@@ -33,3 +31,4 @@ suspend fun loadNewArticle(url: Uri, ctx: Context) {
 
 inline fun <reified T> serialize(contents: T) = Klaxon().toJsonString(contents)
 inline fun <reified T> deserialize(contents: String): Option<T> = Klaxon().parse<T>(contents).toOption()
+inline fun <reified T> deserializeList(contents: String): Option<List<T>> = Klaxon().parseArray<T>(contents).toOption()
