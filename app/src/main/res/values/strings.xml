@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Troper</string>
+    <string name="offline_caption">Offline</string>
+    <string name="favorites_caption">Favorites</string>
+    <string name="session_caption">Session</string>
+    <string name="recent_caption">Recent</string>
+    <string name="random_caption">Random</string>
 </resources>

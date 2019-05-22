@@ -1,26 +1,24 @@
 package com.peterparameter.troper.view
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
+import androidx.fragment.app.*
+import arrow.core.toOption
 import com.peterparameter.troper.domain.ArticleInfo
-import com.peterparameter.troper.utils.instanceOf
+import com.peterparameter.troper.utils.*
 
-class ArticlesPagerAdapter(fm: FragmentManager, articles: List<ArticleInfo>) : FragmentPagerAdapter(fm) {
-    private var pages: List<Pair<ArticleInfo, Fragment>>
+class ArticlesPagerAdapter(private val fm: FragmentManager,
+                           private val articles: List<ArticleInfo>,
+                           private val parentViewId: Int) : FragmentStatePagerAdapter(fm) {
 
     init {
         val fragments = articles.map {
-            instanceOf<ArticleContentFragment>(
-                "content" to it.content
-            )
+            instanceOf<ArticleContentFragment>("content" to it.content)
         }
-        pages = articles.zip(fragments)
+        fragments.zipWithIndex().forEach { fm.beginTransaction().add(parentViewId ,it.first, it.second.toString()).commit() }
     }
 
-    override fun getItem(index: Int): Fragment = pages[index].second
+    override fun getItem(index: Int): Fragment = fm.findFragmentByTag(index.toString()).toOption().getOrThrow()
 
-    override fun getCount(): Int = pages.size
+    override fun getCount(): Int = articles.size
 
-    override fun getPageTitle(position: Int): CharSequence? = pages[position].first.title
+    override fun getPageTitle(position: Int): CharSequence? = articles[position].title
 }

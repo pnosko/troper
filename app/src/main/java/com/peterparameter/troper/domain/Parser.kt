@@ -51,7 +51,7 @@ object Parser {
         return text.replace("&nbsp;", "")
     }
 
-    private fun wrap(title: String, article: String, rawScript: String): String {
+    private fun wrap(title: String, article: String, rawScript: String?): String {
         return createHTMLDocument().html {
             head {
                 title(title)
@@ -59,9 +59,9 @@ object Parser {
             body {
                 header { h1 { +title }}
                 unsafe { raw(removeNBSP(article)) }
-//                script(ScriptType.textJavaScript) {
-//                    unsafe { raw(rawScript) }
-//                }
+                script(ScriptType.textJavaScript) {
+                    unsafe { raw(rawScript.orEmpty()) }
+                }
             }
         }.serialize()
     }

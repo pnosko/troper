@@ -2,6 +2,7 @@ package com.peterparameter.troper
 
 import com.peterparameter.troper.domain.ArticleInfo
 import com.peterparameter.troper.domain.Parser
+import com.peterparameter.troper.utils.TestArticle
 import com.peterparameter.troper.utils.deserializeList
 import com.peterparameter.troper.utils.getOrThrow
 import com.peterparameter.troper.utils.serialize
