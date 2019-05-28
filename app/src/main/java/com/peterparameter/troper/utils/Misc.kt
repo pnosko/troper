@@ -9,7 +9,7 @@ import arrow.instances.`try`.monad.binding
 import com.beust.klaxon.Klaxon
 import com.peterparameter.troper.activities.ArticlesActivity
 import org.http4k.core.Uri
-import org.jetbrains.anko.*
+import splitties.intents.*
 
 fun <T> identity(t: T): T { return t}
 
@@ -26,7 +26,7 @@ suspend fun loadNewArticle(url: Uri, ctx: Context) {
     val intent = binding {
         val articles = arrayOf(article.bind())
         val articlesJson = serialize(articles)
-        ctx.intentFor<ArticlesActivity>("articles" to articlesJson).singleTop().setup { it.flags = Intent.FLAG_ACTIVITY_NEW_TASK }
+        start(ArticlesActivity){}
     }
     intent.fold(
         { e -> ctx.toast(e.message!!) },

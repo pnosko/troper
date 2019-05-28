@@ -12,7 +12,6 @@ import org.http4k.core.Request
 import org.http4k.core.Uri
 import org.http4k.core.then
 import org.http4k.filter.ClientFilters
-import org.jetbrains.anko.coroutines.experimental.bg
 
 class TropesApiImpl : TropesApi {
     private var mainJS: String? = null
