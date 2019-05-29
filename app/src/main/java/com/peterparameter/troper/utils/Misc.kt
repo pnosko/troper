@@ -1,15 +1,12 @@
 package com.peterparameter.troper.utils
 
 import android.content.Context
-import android.content.Intent
-import androidx.fragment.app.*
-import androidx.core.os.*
-import arrow.core.*
-import arrow.instances.`try`.monad.binding
+import android.view.View
+import android.webkit.WebView
+import androidx.fragment.app.Fragment
+import arrow.core.Option
+import arrow.core.toOption
 import com.beust.klaxon.Klaxon
-import com.peterparameter.troper.activities.ArticlesActivity
-import org.http4k.core.Uri
-import splitties.intents.*
 
 fun <T> identity(t: T): T { return t}
 
@@ -18,21 +15,9 @@ inline fun <reified T : Fragment> instanceOf(vararg params: Pair<String, Any>)
     arguments = androidx.core.os.bundleOf(*params)
 }
 
-fun createApi(): TropesApi = DummyTropesApi()
 
-suspend fun loadNewArticle(url: Uri, ctx: Context) {
-    val api = createApi()
-    val article = api.getParsedArticle(url).await()
-    val intent = binding {
-        val articles = arrayOf(article.bind())
-        val articlesJson = serialize(articles)
-        start(ArticlesActivity){}
-    }
-    intent.fold(
-        { e -> ctx.toast(e.message!!) },
-        { ctx.startActivity(it) }
-    )
-}
+
+fun createApi(): TropesApi = DummyTropesApi()
 
 inline fun <reified T> serialize(contents: T) = Klaxon().toJsonString(contents)
 inline fun <reified T> deserialize(contents: String): Option<T> = Klaxon().parse<T>(contents).toOption()

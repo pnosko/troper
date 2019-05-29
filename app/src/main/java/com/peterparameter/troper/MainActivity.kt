@@ -2,7 +2,6 @@ package com.peterparameter.troper
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.peterparameter.troper.utils.loadNewArticle
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.*
 import org.http4k.core.Uri
@@ -16,8 +15,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-        launch {
-            loadNewArticle(dummyUrl, baseContext)
-        }
+//        launch {
+//            loadNewArticle(dummyUrl, baseContext)
+//        }
     }
 }

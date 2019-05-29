@@ -6,7 +6,6 @@ import android.webkit.WebViewClient
 import arrow.core.getOrElse
 import arrow.core.toOption
 import com.peterparameter.troper.utils.forEach
-import com.peterparameter.troper.utils.loadNewArticle
 import kotlinx.coroutines.runBlocking
 import org.http4k.core.Uri
 import java.util.regex.Pattern
@@ -22,19 +21,19 @@ class TropesWebClient : WebViewClient() {
         return url.host.isEmpty()
     }
 
-    override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-        val url = request?.url.toOption().map{Uri.of(it.toString())}
-        val shouldOverride = url.map { isTropesUrl(it) }.getOrElse { false }
-        println(shouldOverride) // REMOVE
-        if (shouldOverride) {
-            val ctx =  view!!.context
-            url.forEach {
-                runBlocking {
-                    loadNewArticle(it, ctx)
-                }
-            }
-            return true
-        }
-        return super.shouldOverrideUrlLoading(view, request)
-    }
+//    override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+//        val url = request?.url.toOption().map{Uri.of(it.toString())}
+//        val shouldOverride = url.map { isTropesUrl(it) }.getOrElse { false }
+//        println(shouldOverride) // REMOVE
+//        if (shouldOverride) {
+//            val ctx =  view!!.context
+//            url.forEach {
+//                runBlocking {
+//                    loadNewArticle(it, ctx)
+//                }
+//            }
+//            return true
+//        }
+//        return super.shouldOverrideUrlLoading(view, request)
+//    }
 }
