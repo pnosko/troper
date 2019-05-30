@@ -3,7 +3,7 @@ package com.peterparameter.troper.utils
 import arrow.core.Option
 import arrow.core.Try
 
-fun <T> T.setup(f: (T) -> Unit): T {
+fun <T> T.setupWith(f: (T) -> Unit): T {
     f(this)
     return this
 }

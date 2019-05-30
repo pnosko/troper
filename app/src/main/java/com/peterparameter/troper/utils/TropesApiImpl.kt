@@ -14,7 +14,13 @@ import org.http4k.core.then
 import org.http4k.filter.ClientFilters
 
 class TropesApiImpl : TropesApi {
+    private val randomUri: Uri = Uri.of("https://tvtropes.org/pmwiki/randomitem.php")
+
+    override fun getRandomArticle(): DeferredK<Try<ArticleInfo>> = getParsedArticle(randomUri)
+
     private var mainJS: String? = null
+
+
 
     override fun getParsedArticle(url: Uri): DeferredK<Try<ArticleInfo>> =
         DeferredK {

@@ -7,4 +7,5 @@ import org.http4k.core.Uri
 
 interface TropesApi {
     fun getParsedArticle(url: Uri): DeferredK<Try<ArticleInfo>>
+    fun getRandomArticle(): DeferredK<Try<ArticleInfo>>
 }
