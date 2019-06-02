@@ -54,13 +54,14 @@ def ksoup_version = "1.0.5"
 def androidx_version = "1.1.0-alpha05"
 def lifecycle_version = "2.2.0-alpha01"
 def splitties_version = "3.0.0-alpha06"
+def androidx_core_version = "1.0.2"
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.core:core-ktx:1.0.2'
+    implementation "androidx.core:core-ktx:$androidx_core_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.recyclerview:recyclerview:$androidx_version"
@@ -71,18 +72,8 @@ dependencies {
 
     // Splitties
     implementation "com.louiscad.splitties:splitties-arch-lifecycle:$splitties_version"
-    implementation "com.louiscad.splitties:splitties-arch-room:$splitties_version"
-    implementation "com.louiscad.splitties:splitties-lifecycle-coroutines:$splitties_version"
-    implementation "com.louiscad.splitties:splitties-preferences:$splitties_version"
-    implementation "com.louiscad.splitties:splitties-views:$splitties_version"
-    implementation "com.louiscad.splitties:splitties-views-dsl:$splitties_version"
-    implementation "com.louiscad.splitties:splitties-views-dsl-appcompat:$splitties_version"
-    implementation "com.louiscad.splitties:splitties-views-dsl-coordinatorlayout:$splitties_version"
-    implementation "com.louiscad.splitties:splitties-views-dsl-material:$splitties_version"
-    implementation "com.louiscad.splitties:splitties-intents:$splitties_version"
-    implementation "com.louiscad.splitties:splitties-fragmentargs:$splitties_version"
-    implementation "com.louiscad.splitties:splitties-toast:$splitties_version"
-    implementation "com.louiscad.splitties:splitties-activities:$splitties_version"
+    implementation "com.louiscad.splitties:splitties-fun-pack-android-material-components-with-views-dsl:$splitties_version"
+
 
 
     debugImplementation "com.louiscad.splitties:splitties-views-dsl-ide-preview:$splitties_version"

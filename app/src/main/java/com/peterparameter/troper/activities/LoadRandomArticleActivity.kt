@@ -10,11 +10,13 @@ import com.peterparameter.troper.view.ArticleFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import splitties.arch.lifecycle.ObsoleteSplittiesLifecycleApi
 import splitties.experimental.InternalSplittiesApi
 import splitties.toast.toast
 import kotlin.coroutines.CoroutineContext
 import kotlin.contracts.ExperimentalContracts
 
+@ObsoleteSplittiesLifecycleApi
 @ExperimentalContracts
 @InternalSplittiesApi
 class LoadRandomArticleActivity: AppCompatActivity(), CoroutineScope {
