@@ -74,9 +74,9 @@ dependencies {
     implementation "com.louiscad.splitties:splitties-arch-lifecycle:$splitties_version"
     implementation "com.louiscad.splitties:splitties-fun-pack-android-material-components-with-views-dsl:$splitties_version"
 
-
-
     debugImplementation "com.louiscad.splitties:splitties-views-dsl-ide-preview:$splitties_version"
+
+//    implementation 'com.github.m7mdra:HtmlRecycler:0.1.12'
 
 
 

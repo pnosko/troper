@@ -27,7 +27,7 @@ class ParserUnitTest {
     fun parseAndWrapAndSave() {
         val wrapped = createExampleArticle()
         File("doc.html").writeText(wrapped.content)
-        assertEquals(2, wrapped.subpages.size)
+        assertEquals(5, wrapped.subpages.size)
     }
 
     private fun createExampleArticle(): ArticleInfo = Parser.parse(TestArticle.content, "").getOrThrow()

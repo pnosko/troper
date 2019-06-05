@@ -1,6 +1,7 @@
 package com.peterparameter.troper.activities
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import arrow.core.Try
 import com.peterparameter.troper.domain.ArticleInfo
@@ -13,6 +14,7 @@ import kotlinx.coroutines.runBlocking
 import splitties.arch.lifecycle.ObsoleteSplittiesLifecycleApi
 import splitties.experimental.InternalSplittiesApi
 import splitties.toast.toast
+import splitties.views.dsl.core.frameLayout
 import kotlin.coroutines.CoroutineContext
 import kotlin.contracts.ExperimentalContracts
 
@@ -30,8 +32,12 @@ class LoadRandomArticleActivity: AppCompatActivity(), CoroutineScope {
     }
 
     private fun showArticle(articleInfo: ArticleInfo) {
+        setContentView(layout)
+
         val ui = ArticleFragment.create(articleInfo)
-        setContentView(ui.view)
+        val ft = supportFragmentManager.beginTransaction()
+        ft.add(layout.id, ui).commit()
+
     }
 
     private fun showError(err: Throwable) {
@@ -42,4 +48,6 @@ class LoadRandomArticleActivity: AppCompatActivity(), CoroutineScope {
         val api = createApi()
         return api.getRandomArticle().await()
     }
+
+    private val layout by lazy { frameLayout(View.generateViewId()) }
 }
