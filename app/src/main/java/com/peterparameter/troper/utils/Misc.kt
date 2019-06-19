@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.webkit.WebView
 import androidx.fragment.app.Fragment
+import arrow.core.Either
 import arrow.core.Option
 import arrow.core.toOption
 import com.beust.klaxon.Klaxon
@@ -15,7 +16,7 @@ inline fun <reified T : Fragment> instanceOf(vararg params: Pair<String, Any>)
     arguments = androidx.core.os.bundleOf(*params)
 }
 
-
+typealias Attempt<T> = Either<Throwable, T>
 
 fun createApi(): TropesApi = DummyTropesApi()
 

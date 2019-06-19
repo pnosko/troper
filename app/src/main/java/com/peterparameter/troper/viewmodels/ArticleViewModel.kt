@@ -3,8 +3,45 @@ package com.peterparameter.troper.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.peterparameter.troper.api.DummyApi
+import com.peterparameter.troper.api.RetrievalApi
 import com.peterparameter.troper.domain.ArticleInfo
+import com.peterparameter.troper.domain.ArticleSource
+import com.peterparameter.troper.utils.Attempt
+import com.peterparameter.troper.utils.DummyTropesApi
+import com.peterparameter.troper.utils.TropesApi
+import org.http4k.core.Uri
 
-class ArticleViewModel(private val articleInfo: ArticleInfo) : ViewModel() {
-    val article: LiveData<ArticleInfo> = MutableLiveData(articleInfo)
+class ArticleViewModel(val articleSource: ArticleSource) : ViewModel() {
+    private val tropesAPI: RetrievalApi = DummyApi()
+
+    private val articleMutable = MutableLiveData<ArticleInfo>()
+    val article: LiveData<ArticleInfo> = articleMutable
+
+    private val isLoadingSettable = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = isLoadingSettable
+
+    private val errorSettable = MutableLiveData<String>()
+    val error: LiveData<String> = errorSettable
+
+    init {
+        loadArticle()
+    }
+
+    private fun loadArticle() {
+        this.isLoadingSettable.value = true
+        errorSettable.value = null
+
+        tropesAPI.retrieve(articleSource).attempt().unsafeRunSync().fold(::onError, ::onSuccess)
+    }
+
+    private fun onError(error: Throwable) {
+        errorSettable.value = error.message
+        isLoadingSettable.value = false
+    }
+
+    private fun onSuccess(articleInfo: ArticleInfo) {
+        articleMutable.value = articleInfo
+        isLoadingSettable.value = false
+    }
 }

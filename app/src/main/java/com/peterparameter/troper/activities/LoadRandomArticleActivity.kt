@@ -7,11 +7,13 @@ import arrow.core.Either
 import arrow.core.Try
 import com.peterparameter.troper.domain.ArticleInfo
 import com.peterparameter.troper.domain.ArticleWrapper
+import com.peterparameter.troper.domain.RandomArticle
 import com.peterparameter.troper.utils.createApi
 import com.peterparameter.troper.view.ArticleFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import org.http4k.core.Uri
 import splitties.arch.lifecycle.ObsoleteSplittiesLifecycleApi
 import splitties.experimental.InternalSplittiesApi
 import splitties.toast.toast
@@ -22,32 +24,14 @@ import kotlin.contracts.ExperimentalContracts
 @ObsoleteSplittiesLifecycleApi
 @ExperimentalContracts
 @InternalSplittiesApi
-class LoadRandomArticleActivity: AppCompatActivity(), CoroutineScope {
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.IO
-
+class LoadRandomArticleActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val articleInfo = runBlocking { loadArticle() }
-        articleInfo.fold(::showError, ::showArticle)
-    }
-
-    private fun showArticle(articleInfo: ArticleInfo) {
         setContentView(layout)
 
-        val ui = ArticleFragment.create(articleInfo)
+        val ui = ArticleFragment.create(RandomArticle)
         val ft = supportFragmentManager.beginTransaction()
         ft.add(layout.id, ui).commit()
-
-    }
-
-    private fun showError(err: Throwable) {
-        toast("${err.message}")
-    }
-
-    private fun loadArticle(): Either<Throwable, ArticleInfo> {
-        val api = createApi()
-        return api.getRandomArticle().attempt().unsafeRunSync()
     }
 
     private val layout by lazy { frameLayout(View.generateViewId()) }

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.peterparameter.troper.domain.ArticleInfo
+import com.peterparameter.troper.domain.ArticleSource
 import com.peterparameter.troper.utils.deserialize
 import com.peterparameter.troper.utils.getOrThrow
 import com.peterparameter.troper.utils.serialize
@@ -22,16 +22,18 @@ import kotlin.contracts.ExperimentalContracts
 @ExperimentalContracts
 class ArticleFragment : Fragment() {
     companion object {
-        fun create(article: ArticleInfo): ArticleFragment = ArticleFragment().apply { articleInfoString = serialize(article )}
+        fun create(articleSource: ArticleSource): ArticleFragment = ArticleFragment().apply { this.articleSource = serialize(articleSource) }
     }
 
-    private val articleVM: ArticleViewModel by activityScope{ArticleViewModel(deserialize<ArticleInfo>(articleInfoString).getOrThrow())}
+    private val articleVM: ArticleViewModel by activityScope{ArticleViewModel(deserialize<ArticleSource>(articleSource).getOrThrow())}
 
-    var articleInfoString: String by arg()       // change to descriptor
+    var articleSource: String by arg()       // change to descriptor
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val ui = ArticleView(context!!)     // TODO: error if null?
-        ui.setup(articleVM.article.value!!)
+        observeNotNull(articleVM.article) {
+            ui.setup(it)
+        }
         return ui.root
     }
 }
