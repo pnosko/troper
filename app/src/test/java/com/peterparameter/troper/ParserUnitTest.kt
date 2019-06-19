@@ -30,7 +30,7 @@ class ParserUnitTest {
         assertEquals(5, wrapped.subpages.size)
     }
 
-    private fun createExampleArticle(): ArticleInfo = Parser.parse(TestArticle.content, "").getOrThrow()
+    private fun createExampleArticle(): ArticleInfo = Parser.parse(TestArticle.content, TestArticle.script).getOrThrow()
 
     @Test
     fun serializeDeserializeList() {

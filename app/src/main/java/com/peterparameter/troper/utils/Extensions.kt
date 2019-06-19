@@ -2,6 +2,7 @@ package com.peterparameter.troper.utils
 
 import arrow.core.Option
 import arrow.core.Try
+import arrow.syntax.collections.flatten
 
 fun <T> T.setupWith(f: (T) -> Unit): T {
     f(this)
@@ -17,3 +18,4 @@ fun <T> Option<T>.getOrThrow(): T = this.fold({throw NullPointerException("Optio
 fun <T> Option<T>.toTry(): Try<T> = Try{this.getOrThrow()}
 
 fun <T> List<T>.zipWithIndex(): List<Pair<T, Int>> = this.zip(0.rangeTo(this.size))
+

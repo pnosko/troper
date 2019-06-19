@@ -1,8 +1,7 @@
 package com.peterparameter.troper.utils
 
 import arrow.core.Try
-import arrow.core.toOption
-import arrow.effects.DeferredK
+import arrow.effects.IO
 import com.peterparameter.troper.domain.ArticleInfo
 import com.peterparameter.troper.domain.Parser
 import kotlinx.coroutines.Deferred
@@ -16,17 +15,15 @@ import org.http4k.filter.ClientFilters
 class TropesApiImpl : TropesApi {
     private val randomUri: Uri = Uri.of("https://tvtropes.org/pmwiki/randomitem.php")
 
-    override fun getRandomArticle(): DeferredK<Try<ArticleInfo>> = getParsedArticle(randomUri)
+    override fun getRandomArticle(): IO<ArticleInfo> = getParsedArticle(randomUri)
 
     private var mainJS: String? = null
 
 
 
-    override fun getParsedArticle(url: Uri): DeferredK<Try<ArticleInfo>> =
-        DeferredK {
-            Try.Failure(NotImplementedError())
+    override fun getParsedArticle(url: Uri): IO<ArticleInfo> =
+        IO.raiseError(NotImplementedError())
 //            fetchAndParseArticle(url)
-        }
 
 //    private suspend fun fetchAndParseArticle(url: Uri): Try<ArticleInfo> {
 //        val htmlResponse = fetchArticleAsync(url).await()

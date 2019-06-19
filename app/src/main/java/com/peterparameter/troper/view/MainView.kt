@@ -19,6 +19,7 @@ class MainView(override val ctx: Context) : Ui {
     override val root by lazy {
         coordinatorLayout {
             fitsSystemWindows = true
+//            addDefaultAppBar(ctx)
 
             add(content, defaultLParams { })
         }

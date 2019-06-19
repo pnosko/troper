@@ -1,12 +1,6 @@
-package com.peterparameter.troper
+package com.peterparameter.troper.utils
 
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
 import android.webkit.WebViewClient
-import arrow.core.getOrElse
-import arrow.core.toOption
-import com.peterparameter.troper.utils.forEach
-import kotlinx.coroutines.runBlocking
 import org.http4k.core.Uri
 import java.util.regex.Pattern
 

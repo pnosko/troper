@@ -3,6 +3,7 @@ package com.peterparameter.troper.activities
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import arrow.core.Either
 import arrow.core.Try
 import com.peterparameter.troper.domain.ArticleInfo
 import com.peterparameter.troper.domain.ArticleWrapper
@@ -44,9 +45,9 @@ class LoadRandomArticleActivity: AppCompatActivity(), CoroutineScope {
         toast("${err.message}")
     }
 
-    private suspend fun loadArticle(): Try<ArticleInfo> {
+    private fun loadArticle(): Either<Throwable, ArticleInfo> {
         val api = createApi()
-        return api.getRandomArticle().await()
+        return api.getRandomArticle().attempt().unsafeRunSync()
     }
 
     private val layout by lazy { frameLayout(View.generateViewId()) }

@@ -1,6 +1,9 @@
 package com.peterparameter.troper.view
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.peterparameter.troper.domain.ArticleInfo
 import com.peterparameter.troper.utils.deserialize
@@ -26,12 +29,9 @@ class ArticleFragment : Fragment() {
 
     var articleInfoString: String by arg()       // change to descriptor
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val ui = ArticleView(context!!)     // TODO: error if null?
         ui.setup(articleVM.article.value!!)
-//        observeNotNull(articleVM.article) {
-//            ui.setup(it)
-//        }
+        return ui.root
     }
 }

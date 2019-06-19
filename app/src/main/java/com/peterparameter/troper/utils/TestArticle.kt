@@ -1,8 +1,7 @@
 package com.peterparameter.troper.utils
 
-import arrow.instances.StringContext
-import arrow.instances.StringMonoidInstance
-import arrow.instances.list.foldable.combineAll
+import arrow.core.extensions.StringContext
+import arrow.data.extensions.list.foldable.combineAll
 
 object TestArticle {
     val script: String = """
@@ -543,7 +542,7 @@ Magic A Is Magic A
 </li></ul></div>
     """.trimIndent()
 
-    val mid2 = """
+    private val mid2 = """
 <p></p><div class="folderlabel" onclick="togglefolder('folder6');">&nbsp;&nbsp;&nbsp;&nbsp;Literature&nbsp;</div><div id="folder6" class="folder" isfolder="true" style="display:block;">
 <ul><li> The superpowers in <em><a class="twikilink" href="/pmwiki/pmwiki.php/Literature/TheZombieKnight" title="/pmwiki/pmwiki.php/Literature/TheZombieKnight">The Zombie Knight Saga</a></em> are handled this way, as they are broken into six separate classes, including <a class="twikilink" href="/pmwiki/pmwiki.php/Main/ThePowerOfCreation" title="/pmwiki/pmwiki.php/Main/ThePowerOfCreation">materialization</a> and <a class="twikilink" href="/pmwiki/pmwiki.php/Main/BodyHorror" title="/pmwiki/pmwiki.php/Main/BodyHorror">transfiguration</a>, among others. Even the arguably main source of magic in the story, that of <a class="twikilink" href="/pmwiki/pmwiki.php/Main/GrimReaper" title="/pmwiki/pmwiki.php/Main/GrimReaper">the existence of reapers</a>, is explained as <span class="spoiler" title="you can set spoilers visible by default on your profile">a genetic trait which manifested in humans several millennia ago</span>.
 <ul><li> It should be mentioned, however, that the story is ongoing and as of December 2017, it does still include other, more mysterious forms of magic or magical artifacts, which may or may not see more detailed explanations given to them in the future. And given the author's apparent love of both <a class="twikilink" href="/pmwiki/pmwiki.php/Main/TeasingCreator" title="/pmwiki/pmwiki.php/Main/TeasingCreator">playing with his audience</a> AND writing <a class="twikilink" href="/pmwiki/pmwiki.php/Main/MrExposition" title="/pmwiki/pmwiki.php/Main/MrExposition">characters whose greatest joy is explaining things</a>, it's anyone's guess what will happen.
