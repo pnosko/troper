@@ -2,7 +2,6 @@ package com.peterparameter.troper.utils
 
 import arrow.core.Option
 import arrow.core.Try
-import arrow.syntax.collections.flatten
 
 fun <T> T.setupWith(f: (T) -> Unit): T {
     f(this)

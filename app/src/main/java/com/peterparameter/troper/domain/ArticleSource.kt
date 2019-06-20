@@ -1,11 +1,16 @@
 package com.peterparameter.troper.domain
 
-import org.http4k.core.Uri
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
-interface ArticleSource
+@Parcelize
+open class ArticleSource: Parcelable
 
-data class ArticleUri(val uri: Uri): ArticleSource
+@Parcelize
+data class ArticleUri(val uri: String): ArticleSource()
 
-object RandomArticle: ArticleSource
+@Parcelize
+object RandomArticle: ArticleSource()
 
-data class DatabaseArticle(val id: Long): ArticleSource
+@Parcelize
+data class DatabaseArticle(val id: Long): ArticleSource()

@@ -3,6 +3,7 @@ package com.peterparameter.troper.activities
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import com.peterparameter.troper.domain.ArticleInfo
+import com.peterparameter.troper.domain.ArticleSource
 import com.peterparameter.troper.utils.*
 import splitties.bundle.BundleSpec
 import splitties.bundle.bundle
@@ -14,16 +15,16 @@ class ArticlesActivity : FragmentActivity() {
     companion object : ActivityIntentSpec<ArticlesActivity, ArticlesSpec> by activitySpec(ArticlesSpec)
 
     object ArticlesSpec : BundleSpec() {
-        var articles: List<String> by bundle()
+        var articles: List<ArticleSource> by bundle()
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         withExtras(ArticlesSpec) {
 
         }
-        val articlesJson = intent.getStringExtra("articles")
-        val articles = deserializeList<ArticleInfo>(articlesJson)
-        println(articles.isDefined())
-//        setContentView(ArticlesView().createView().id)
+//        val articlesJson = intent.
+//        val articles = deserializeList<ArticleInfo>(articlesJson)
+//        println(articles.isDefined())
+////        setContentView(ArticlesView().createView().id)
     }
 }

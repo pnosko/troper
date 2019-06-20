@@ -6,9 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.peterparameter.troper.domain.ArticleSource
-import com.peterparameter.troper.utils.deserialize
-import com.peterparameter.troper.utils.getOrThrow
-import com.peterparameter.troper.utils.serialize
 import com.peterparameter.troper.viewmodels.ArticleViewModel
 import splitties.arch.lifecycle.ObsoleteSplittiesLifecycleApi
 import splitties.arch.lifecycle.activityScope
@@ -22,12 +19,12 @@ import kotlin.contracts.ExperimentalContracts
 @ExperimentalContracts
 class ArticleFragment : Fragment() {
     companion object {
-        fun create(articleSource: ArticleSource): ArticleFragment = ArticleFragment().apply { this.articleSource = serialize(articleSource) }
+        fun create(articleSource: ArticleSource): ArticleFragment = ArticleFragment().apply { this.articleSource = articleSource }
     }
 
-    private val articleVM: ArticleViewModel by activityScope{ArticleViewModel(deserialize<ArticleSource>(articleSource).getOrThrow())}
+    private val articleVM: ArticleViewModel by activityScope{ArticleViewModel(articleSource)}
 
-    var articleSource: String by arg()       // change to descriptor
+    var articleSource: ArticleSource by arg()       // change to descriptor
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val ui = ArticleView(context!!)     // TODO: error if null?
