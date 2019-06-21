@@ -1,12 +1,32 @@
 package com.peterparameter.troper.view
 
 import android.content.Context
-import android.view.View
+import androidx.fragment.app.FragmentManager
+import com.peterparameter.troper.domain.ArticleSource
+import com.peterparameter.troper.utils.viewPager
+import splitties.experimental.InternalSplittiesApi
 import splitties.views.dsl.core.Ui
-import splitties.views.*
+import kotlin.contracts.ExperimentalContracts
 
-class ArticleListView(override val ctx: Context) : Ui {
+@ExperimentalContracts
+@InternalSplittiesApi
+class ArticleListView(
+    override val ctx: Context,
+    supportFragmentManager: FragmentManager
+) : Ui {
     override val root by lazy { articlePager }
 
-    val articlePager = viewPager()
+    private val pagerAdapter = ArticlesPagerAdapter(supportFragmentManager)
+
+    private val articlePager = viewPager {
+        adapter = pagerAdapter
+    }
+
+    fun addArticle(article: ArticleSource) {
+        pagerAdapter.add(article)
+    }
+
+    fun removeArticle(article: ArticleSource) {
+        pagerAdapter.remove(article)
+    }
 }

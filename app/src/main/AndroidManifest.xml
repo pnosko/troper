@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ArticlesActivity"/>
+        <activity android:name=".activities.ArticleListActivity"/>
         <activity android:name=".activities.LoadRandomArticleActivity"/>
     </application>
 

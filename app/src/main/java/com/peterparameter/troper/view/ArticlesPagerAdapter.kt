@@ -10,13 +10,24 @@ import kotlin.contracts.ExperimentalContracts
 
 @ExperimentalContracts
 @InternalSplittiesApi
-class ArticlesPagerAdapter(private val fm: FragmentManager,
-                           private val articleSources: List<ArticleSource>,
-                           private val parentViewId: Int) : FragmentStatePagerAdapter(fm) {
+class ArticlesPagerAdapter(
+    fm: FragmentManager,
+    private val articleSources: MutableList<ArticleSource> = emptyList<ArticleSource>() as MutableList<ArticleSource>
+) : FragmentStatePagerAdapter(fm) {
 
     override fun getItem(index: Int): Fragment = articleSources.getOrNull(index).toOption().map(ArticleFragment.Companion::create).getOrThrow()
 
     override fun getCount(): Int = articleSources.size
 
     override fun getPageTitle(position: Int): CharSequence? = ""
+
+    fun add(article: ArticleSource) {
+        articleSources.add(article)
+        notifyDataSetChanged()
+    }
+
+    fun remove(article: ArticleSource) {
+        articleSources.remove(article)
+        notifyDataSetChanged()
+    }
 }
