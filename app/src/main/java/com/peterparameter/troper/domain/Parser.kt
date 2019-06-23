@@ -1,15 +1,13 @@
 package com.peterparameter.troper.domain
 
 import arrow.core.*
-import arrow.instances.option.monad.binding
-import arrow.instances.option.monad.flatMap
+import arrow.core.extensions.option.monad.binding
 import arrow.syntax.collections.flatten
 import com.fcannizzaro.ksoup.Ksoup
-import kotlinx.html.body
-import kotlinx.html.dom.createHTMLDocument
-import kotlinx.html.dom.serialize
-import kotlinx.html.*
-import org.jsoup.nodes.Element
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import org.jsoup.nodes.Entities
+import org.jsoup.safety.Whitelist
 
 object Parser {
     fun parse(rawArticle: String, rawScript: String): Option<ArticleInfo> {
@@ -17,15 +15,25 @@ object Parser {
         return binding {
             val parsed = Try { ks.from<ArticleWrapper>(ArticleWrapper()) }.toOption().bind()
             val title = parsed.title.toOption().bind()
-            println(title)
             val element = parsed.article.element.toOption().bind()
             val htmlContent = element.html().toOption().bind()
 
-            removeBadElems(element)
-            val content = wrap(title, htmlContent, rawScript)
-            val subpages = parsed.subpages.map(::createLinks).flatten()
+            val cleaned = cleanup(htmlContent)
+            val content = wrap(title, cleaned, rawScript)
+            val subpages: List<ArticleLink> = parsed.subpages.map(::createLinks).flatten()
             ArticleInfo(title, content, subpages)
         }
+    }
+
+    private fun cleanup(htmlContent: String): String {
+        val urlBase = "https://tvtropes.org"
+        val outputSettings = Document.OutputSettings()
+            .syntax(Document.OutputSettings.Syntax.html)
+            .escapeMode(Entities.EscapeMode.extended)
+            .prettyPrint(true)
+        val whitelist = Whitelist.basicWithImages().addAttributes("*", "id", "class")
+        val cleaned = Jsoup.clean(htmlContent, urlBase, whitelist, outputSettings)
+        return cleaned!!
     }
 
     private fun stripRaw(article: String): String {
@@ -40,29 +48,11 @@ object Parser {
             }
     }
 
-    private fun removeBadElems(elem: Element) {
-        val tags = listOf("hr", "meta", "input")
-        val classes = listOf("proper-ad-unit", "mobile-ad")
-        tags.forEach{elem.getElementsByTag(it)?.remove()}
-        classes.forEach{elem.getElementsByClass(it)?.remove()}
-    }
+//    private fun removeNBSP(text: String): String {
+//        return text.replace("&nbsp;", "")
+//    }
 
-    private fun removeNBSP(text: String): String {
-        return text.replace("&nbsp;", "")
-    }
-
-    private fun wrap(title: String, article: String, rawScript: String): String {
-        return createHTMLDocument().html {
-            head {
-                title(title)
-            }
-            body {
-                header { h1 { +title }}
-                unsafe { raw(removeNBSP(article)) }
-//                script(ScriptType.textJavaScript) {
-//                    unsafe { raw(rawScript) }
-//                }
-            }
-        }.serialize()
+    private fun wrap(title: String, article: String, rawScript: String?): String {
+        return "<!DOCTYPE html><html><head lang=\"en\"><title>$title</title></head><body><div>$article</div><script type=\"application/javascript\">$rawScript</script></body></html>"
     }
 }

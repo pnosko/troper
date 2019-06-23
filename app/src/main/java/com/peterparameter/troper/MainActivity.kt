@@ -1,36 +1,33 @@
 package com.peterparameter.troper
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import com.peterparameter.troper.utils.loadNewArticle
-import org.http4k.core.Uri
-import org.jetbrains.anko.*
-import org.jetbrains.anko.design.appBarLayout
-import org.jetbrains.anko.design.coordinatorLayout
-import org.jetbrains.anko.sdk27.coroutines.onClick
-import org.jetbrains.anko.support.v4.viewPager
+import androidx.appcompat.app.AppCompatActivity
+import com.peterparameter.troper.activities.LoadRandomArticleActivity
+import com.peterparameter.troper.view.MainView
+import splitties.activities.start
+import splitties.arch.lifecycle.ObsoleteSplittiesLifecycleApi
+import splitties.experimental.InternalSplittiesApi
+import splitties.toast.toast
+import splitties.views.dsl.core.Ui
+import splitties.views.dsl.core.setContentView
+import splitties.views.onClick
+import kotlin.contracts.ExperimentalContracts
 
-class MainActivity : AppCompatActivity() {
+@ObsoleteSplittiesLifecycleApi
+@InternalSplittiesApi
+@ExperimentalContracts
+class MainActivity : AppCompatActivity(){
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MainView().setContentView(this)
+        setContentView(createUi())
     }
-}
 
-class MainView : AnkoComponent<MainActivity>, AnkoLogger {
-    private val dummyUrl = Uri.of("https://tvtropes.org/pmwiki/pmwiki.php/Main/RestingRecovery")
-
-    override fun createView(ui: AnkoContext<MainActivity>) = ui.apply {
-//        val pager = viewPager()
-        coordinatorLayout {
-            appBarLayout {
-                toolbar()
-            }
-            button("Load Article") {
-                onClick {
-                    loadNewArticle(dummyUrl, ui.ctx)
-                }
-            }
-        }
-    }.view
+    private fun createUi(): Ui {
+        val ui = MainView(this)
+//        setContentView(ui)
+        ui.random.onClick { start<LoadRandomArticleActivity>() }
+        ui.favorites.onClick { toast("Favorites!!") }
+        return ui
+    }
 }

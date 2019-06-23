@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <SearchView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/search">
+    </SearchView>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_height="wrap_content" android:layout_width="match_parent">
+        <Button
+                android:text="@string/random_caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/btn_random"/>
+        <Button
+                android:text="@string/recent_caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/btn_recent"/>
+        <Button
+                android:text="@string/favorites_caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/btn_favorites"/>
+        <Button
+                android:text="@string/offline_caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/btn_offline"/>
+    </LinearLayout>
+    <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="?android:attr/listDivider"
+            android:layout_weight="1"/>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <TextView
+                android:text="@string/session_caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/textView"/>
+    </LinearLayout>
+</LinearLayout>

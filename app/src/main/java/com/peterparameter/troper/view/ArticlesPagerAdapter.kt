@@ -1,26 +1,36 @@
 package com.peterparameter.troper.view
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
-import com.peterparameter.troper.domain.ArticleInfo
-import com.peterparameter.troper.utils.instanceOf
+import androidx.fragment.app.*
+import arrow.core.toOption
+import com.peterparameter.troper.domain.ArticleSource
+import com.peterparameter.troper.utils.*
+import splitties.arch.lifecycle.ObsoleteSplittiesLifecycleApi
+import splitties.experimental.InternalSplittiesApi
+import kotlin.contracts.ExperimentalContracts
 
-class ArticlesPagerAdapter(fm: FragmentManager, articles: List<ArticleInfo>) : FragmentPagerAdapter(fm) {
-    private var pages: List<Pair<ArticleInfo, Fragment>>
 
-    init {
-        val fragments = articles.map {
-            instanceOf<ArticleContentFragment>(
-                "content" to it.content
-            )
-        }
-        pages = articles.zip(fragments)
+@ObsoleteSplittiesLifecycleApi
+@ExperimentalContracts
+@InternalSplittiesApi
+class ArticlesPagerAdapter(
+    fm: FragmentManager
+) : FragmentStatePagerAdapter(fm) {
+
+    private val fragments: MutableList<ArticleFragment> = MutableList{}
+
+    override fun getItem(index: Int): Fragment = fragments.getOrNull(index).toOption().getOrThrow()
+
+    override fun getCount(): Int = fragments.size
+
+    override fun getPageTitle(position: Int): CharSequence? = "" //fragments[position].articleVM.
+
+    fun add(article: ArticleSource) {
+        fragments.add(ArticleFragment.create(article))
+        notifyDataSetChanged()
     }
 
-    override fun getItem(index: Int): Fragment = pages[index].second
-
-    override fun getCount(): Int = pages.size
-
-    override fun getPageTitle(position: Int): CharSequence? = pages[position].first.title
+    fun remove(article: ArticleSource) {
+        fragments.remove(ArticleFragment.create(article))
+        notifyDataSetChanged()
+    }
 }

@@ -2,6 +2,7 @@ package com.peterparameter.troper
 
 import com.peterparameter.troper.domain.ArticleInfo
 import com.peterparameter.troper.domain.Parser
+import com.peterparameter.troper.utils.TestArticle
 import com.peterparameter.troper.utils.deserializeList
 import com.peterparameter.troper.utils.getOrThrow
 import com.peterparameter.troper.utils.serialize
@@ -26,10 +27,10 @@ class ParserUnitTest {
     fun parseAndWrapAndSave() {
         val wrapped = createExampleArticle()
         File("doc.html").writeText(wrapped.content)
-        assertEquals(2, wrapped.subpages.size)
+        assertEquals(5, wrapped.subpages.size)
     }
 
-    private fun createExampleArticle(): ArticleInfo = Parser.parse(TestArticle.content, "").getOrThrow()
+    private fun createExampleArticle(): ArticleInfo = Parser.parse(TestArticle.content, TestArticle.script).getOrThrow()
 
     @Test
     fun serializeDeserializeList() {
