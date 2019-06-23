@@ -4,30 +4,33 @@ import androidx.fragment.app.*
 import arrow.core.toOption
 import com.peterparameter.troper.domain.ArticleSource
 import com.peterparameter.troper.utils.*
+import splitties.arch.lifecycle.ObsoleteSplittiesLifecycleApi
 import splitties.experimental.InternalSplittiesApi
 import kotlin.contracts.ExperimentalContracts
 
 
+@ObsoleteSplittiesLifecycleApi
 @ExperimentalContracts
 @InternalSplittiesApi
 class ArticlesPagerAdapter(
-    fm: FragmentManager,
-    private val articleSources: MutableList<ArticleSource> = emptyList<ArticleSource>() as MutableList<ArticleSource>
+    fm: FragmentManager
 ) : FragmentStatePagerAdapter(fm) {
 
-    override fun getItem(index: Int): Fragment = articleSources.getOrNull(index).toOption().map(ArticleFragment.Companion::create).getOrThrow()
+    private val fragments: MutableList<ArticleFragment> = MutableList{}
 
-    override fun getCount(): Int = articleSources.size
+    override fun getItem(index: Int): Fragment = fragments.getOrNull(index).toOption().getOrThrow()
 
-    override fun getPageTitle(position: Int): CharSequence? = ""
+    override fun getCount(): Int = fragments.size
+
+    override fun getPageTitle(position: Int): CharSequence? = "" //fragments[position].articleVM.
 
     fun add(article: ArticleSource) {
-        articleSources.add(article)
+        fragments.add(ArticleFragment.create(article))
         notifyDataSetChanged()
     }
 
     fun remove(article: ArticleSource) {
-        articleSources.remove(article)
+        fragments.remove(ArticleFragment.create(article))
         notifyDataSetChanged()
     }
 }

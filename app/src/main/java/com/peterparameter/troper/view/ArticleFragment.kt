@@ -24,7 +24,7 @@ class ArticleFragment : Fragment() {
 
     private val articleVM: ArticleViewModel by activityScope{ArticleViewModel(articleSource)}
 
-    var articleSource: ArticleSource by arg()       // change to descriptor
+    var articleSource: ArticleSource by arg()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val ui = ArticleView(context!!)     // TODO: error if null?

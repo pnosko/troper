@@ -55,6 +55,7 @@ def androidx_version = "1.1.0-alpha06"
 def lifecycle_version = "2.2.0-alpha01"
 def splitties_version = "3.0.0-alpha06"
 def androidx_core_version = "1.0.2"
+def rx2_version = '2.2.10'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -77,6 +78,9 @@ dependencies {
     debugImplementation "com.louiscad.splitties:splitties-views-dsl-ide-preview:$splitties_version"
 
 //    implementation 'com.github.m7mdra:HtmlRecycler:0.1.12'
+    // https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxjava
+    implementation "io.reactivex.rxjava2:rxjava:$rx2_version"
+
 
 
 
@@ -87,6 +91,8 @@ dependencies {
     implementation "io.arrow-kt:arrow-typeclasses:$arrow_version"
     implementation "io.arrow-kt:arrow-effects-data:$arrow_version" //optional
     implementation "io.arrow-kt:arrow-effects-extensions:$arrow_version" //optional
+    implementation "io.arrow-kt:arrow-effects-rx2-data:$arrow_version" //optional
+    implementation "io.arrow-kt:arrow-effects-rx2-extensions:$arrow_version" //optional
     implementation "io.arrow-kt:arrow-optics:$arrow_version" //optional
 
 
