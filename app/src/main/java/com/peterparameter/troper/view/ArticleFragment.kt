@@ -27,7 +27,7 @@ class ArticleFragment : Fragment() {
     var articleSource: ArticleSource by arg()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val ui = ArticleView(context!!)     // TODO: error if null?
+        val ui = ArticleView(context!!)
         observeNotNull(articleVM.article) {
             ui.setup(it)
         }

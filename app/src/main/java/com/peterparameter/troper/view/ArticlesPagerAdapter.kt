@@ -16,7 +16,7 @@ class ArticlesPagerAdapter(
     fm: FragmentManager
 ) : FragmentStatePagerAdapter(fm) {
 
-    private val fragments: MutableList<ArticleFragment> = MutableList{}
+    private val fragments: MutableList<ArticleFragment> = mutableListOf()
 
     override fun getItem(index: Int): Fragment = fragments.getOrNull(index).toOption().getOrThrow()
 

@@ -3,6 +3,7 @@ package com.peterparameter.troper.view
 import android.content.Context
 import android.view.View
 import com.peterparameter.troper.domain.ArticleInfo
+import com.peterparameter.troper.utils.TropesWebClient
 import com.peterparameter.troper.utils.webView
 import splitties.experimental.InternalSplittiesApi
 import splitties.views.dsl.core.*
@@ -24,6 +25,8 @@ class ArticleView(override val ctx: Context) : Ui {
         }
     }
 
-    private val articleContentView by lazy { webView(View.generateViewId()) { } }
+    private val articleContentView by lazy { webView(View.generateViewId()) {
+        webViewClient = TropesWebClient()
+    } }
     private val title by lazy { textView {} }
 }

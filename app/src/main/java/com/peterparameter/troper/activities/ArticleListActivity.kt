@@ -3,6 +3,7 @@ package com.peterparameter.troper.activities
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import com.peterparameter.troper.domain.*
+import com.peterparameter.troper.utils.EventBus
 import com.peterparameter.troper.view.ArticleListView
 import splitties.views.dsl.core.*
 import splitties.bundle.BundleSpec
@@ -13,6 +14,7 @@ import splitties.intents.ActivityIntentSpec
 import splitties.intents.activitySpec
 import kotlin.contracts.ExperimentalContracts
 import com.peterparameter.troper.viewmodels.ArticleListViewModel
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import splitties.arch.lifecycle.ObsoleteSplittiesLifecycleApi
 import splitties.arch.lifecycle.activityScope
@@ -36,14 +38,19 @@ class ArticleListActivity : FragmentActivity() {
         withExtras(ArticlesSpec) {
 
         }
-
         val ui = ArticleListView(this, supportFragmentManager)
 
-        subscription = articleListVM.collectionChangeEventStream.observable
-            .subscribe { when(it) {
-                is ArticleAddedEvent -> ui.addArticle(it.article)
-                is ArticleRemovedEvent -> ui.removeArticle(it.article)
-            } }
+        val sub1 = EventBus.filter<ArticleAddedEvent>().subscribe {
+            articleListVM.addItem(it.article)
+            ui.addArticle(it.article)
+        }
+
+        val sub2 = EventBus.filter<ArticleRemovedEvent>().subscribe {
+            articleListVM.removeItem(it.article)
+            ui.removeArticle(it.article)
+        }
+
+        subscription = CompositeDisposable(sub1, sub2)
         setContentView(ui)
     }
 

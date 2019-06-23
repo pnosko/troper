@@ -6,6 +6,7 @@ import arrow.effects.rx2.k
 import com.peterparameter.troper.domain.*
 import io.reactivex.subjects.ReplaySubject
 
+// TODO: Is this useless??
 class ArticleListViewModel(initialSources: List<ArticleSource> = emptyList()): ViewModel() {
     private val sources = initialSources.toMutableList()
     private val collectionChangeSubject =
