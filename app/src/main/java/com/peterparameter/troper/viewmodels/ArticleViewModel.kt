@@ -10,9 +10,10 @@ import com.peterparameter.troper.domain.ArticleSource
 import com.peterparameter.troper.utils.Attempt
 import com.peterparameter.troper.utils.DummyTropesApi
 import com.peterparameter.troper.utils.TropesApi
+import kotlinx.coroutines.runBlocking
 import org.http4k.core.Uri
 
-class ArticleViewModel(val articleSource: ArticleSource) : ViewModel() {
+class ArticleViewModel(private val articleSource: ArticleSource) : ViewModel() {
     private val tropesAPI: RetrievalApi = DummyApi()
 
     private val articleMutable = MutableLiveData<ArticleInfo>()
@@ -25,7 +26,7 @@ class ArticleViewModel(val articleSource: ArticleSource) : ViewModel() {
     val error: LiveData<String> = errorSettable
 
     init {
-        loadArticle()
+        runBlocking { loadArticle() }
     }
 
     private fun loadArticle() {

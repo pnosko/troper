@@ -28,9 +28,8 @@ class ArticleFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val ui = ArticleView(context!!)
-        observeNotNull(articleVM.article) {
-            ui.setup(it)
-        }
+        observeNotNull(articleVM.article) { ui.setup(it) }
+        observeNotNull(articleVM.isLoading) { ui.isBusy = it }
         return ui.root
     }
 }

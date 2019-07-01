@@ -35,23 +35,29 @@ class ArticleListActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        withExtras(ArticlesSpec) {
 
-        }
         val ui = ArticleListView(this, supportFragmentManager)
 
-        val sub1 = EventBus.filter<ArticleAddedEvent>().subscribe {
-            articleListVM.addItem(it.article)
-            ui.addArticle(it.article)
+        subscription = CompositeDisposable(
+            EventBus.filter<ArticleAddedEvent>().subscribe { addArticle(ui, it.article) },
+            EventBus.filter<ArticleRemovedEvent>().subscribe { removeArticle(ui, it.article) }
+        )
+
+        withExtras(ArticlesSpec) {
+            articles.forEach{ EventBus.post(ArticleAddedEvent(it)) }
         }
 
-        val sub2 = EventBus.filter<ArticleRemovedEvent>().subscribe {
-            articleListVM.removeItem(it.article)
-            ui.removeArticle(it.article)
-        }
-
-        subscription = CompositeDisposable(sub1, sub2)
         setContentView(ui)
+    }
+
+    private fun addArticle(ui: ArticleListView, articleSource: ArticleSource) {
+        articleListVM.addItem(articleSource)
+        ui.addArticle(articleSource)
+    }
+
+    private fun removeArticle(ui: ArticleListView, articleSource: ArticleSource) {
+        articleListVM.removeItem(articleSource)
+        ui.removeArticle(articleSource)
     }
 
     override fun onDestroy() {
