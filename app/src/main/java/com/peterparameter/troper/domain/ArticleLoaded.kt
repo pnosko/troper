@@ -1,4 +1,4 @@
-package com.peterparameter.troper.view
+package com.peterparameter.troper.domain
 
 import com.peterparameter.troper.domain.ArticleSource
 

@@ -9,6 +9,7 @@ import com.peterparameter.troper.utils.webView
 import splitties.experimental.InternalSplittiesApi
 import splitties.views.dsl.core.*
 import splitties.views.dsl.core.styles.AndroidStyles
+import splitties.views.gravityCenter
 import kotlin.contracts.ExperimentalContracts
 
 @ExperimentalContracts
@@ -29,17 +30,17 @@ class ArticleView(override val ctx: Context) : Ui {
 
     override val root by lazy { content }
 
-    private val content by lazy {
+    private val content =
         verticalLayout {
             add(articleContentView, lParams(matchParent, matchParent) { })
-            add(busyIndicator, lParams(matchParent, matchParent) { })
+            add(busyIndicator, lParams(matchParent, matchParent) { gravityCenter })
         }
-    }
 
-    private val busyIndicator by lazy { s.progressBar.default { isVisible = false } }
+    private val title by lazy { textView {} }
 
     private val articleContentView by lazy { webView(View.generateViewId()) {
         webViewClient = TropesWebClient()
     } }
-    private val title by lazy { textView {} }
+
+    private val busyIndicator by lazy { s.progressBar.default { isVisible = false } }
 }
