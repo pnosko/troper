@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.peterparameter.troper.domain.ArticleSource
 import com.peterparameter.troper.viewmodels.ArticleViewModel
 import splitties.arch.lifecycle.ObsoleteSplittiesLifecycleApi
-import splitties.arch.lifecycle.activityScope
+import splitties.arch.lifecycle.fragmentScope
 import splitties.arch.lifecycle.observeNotNull
 import splitties.experimental.InternalSplittiesApi
 import splitties.fragmentargs.arg
@@ -22,7 +22,11 @@ class ArticleFragment : Fragment() {
         fun create(articleSource: ArticleSource): ArticleFragment = ArticleFragment().apply { this.articleSource = articleSource }
     }
 
-    private val articleVM: ArticleViewModel by activityScope{ArticleViewModel(articleSource)}
+    private val articleVMLazy = fragmentScope{ArticleViewModel(articleSource)}
+
+    val articleVM by articleVMLazy
+
+    val isInitialized = articleVMLazy.isInitialized()
 
     var articleSource: ArticleSource by arg()
 

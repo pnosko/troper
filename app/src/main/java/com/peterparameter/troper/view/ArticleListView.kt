@@ -1,7 +1,12 @@
 package com.peterparameter.troper.view
 
 import android.content.Context
+import android.view.View
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import androidx.viewpager2.TabLayoutMediator
+import arrow.core.getOrElse
+import com.google.android.material.tabs.TabLayout
 import com.peterparameter.troper.domain.ArticleSource
 import com.peterparameter.troper.utils.viewPager
 import splitties.arch.lifecycle.ObsoleteSplittiesLifecycleApi
@@ -17,26 +22,35 @@ class ArticleListView(
     override val ctx: Context,
     supportFragmentManager: FragmentManager
 ) : Ui {
+
     private val s = MaterialComponentsStyles(ctx)
 
-    override val root by lazy { verticalLayout {
-        add(tabLayout, lParams {  })
-        add(articlePager, lParams {  })
-    } }
+    override val root by lazy { createContent() }
 
-    private val pagerAdapter = ArticlesPagerAdapter(supportFragmentManager)
+    private val pagerAdapter = ArticlesPagerAdapter(supportFragmentManager, (ctx as FragmentActivity).lifecycle)
 
     private val articlePager = viewPager {
         adapter = pagerAdapter
     }
 
-    private val tabLayout = s.tabLayout.default {
-        setupWithViewPager(articlePager)
+    private val tabLayout = s.tabLayout.default()
+
+    private val mediator = TabLayoutMediator(tabLayout, articlePager, ::configureTab)
+
+    private fun createContent(): View {
+        mediator.attach()
+        return verticalLayout {
+            add(tabLayout, lParams {  })
+            add(articlePager, lParams {  })
+        }
+    }
+
+    private fun configureTab(tab: TabLayout.Tab, position: Int) {
+        tab.text = pagerAdapter.titleForIndex(position).getOrElse { "<LOADING>" }
     }
 
     fun addArticle(article: ArticleSource) {
         pagerAdapter.add(article)
-        articlePager.currentItem = pagerAdapter.count - 1
     }
 
     fun removeArticle(article: ArticleSource) {

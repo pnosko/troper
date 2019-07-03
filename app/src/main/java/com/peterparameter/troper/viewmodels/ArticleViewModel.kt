@@ -7,11 +7,7 @@ import com.peterparameter.troper.api.DummyApi
 import com.peterparameter.troper.api.RetrievalApi
 import com.peterparameter.troper.domain.ArticleInfo
 import com.peterparameter.troper.domain.ArticleSource
-import com.peterparameter.troper.utils.Attempt
-import com.peterparameter.troper.utils.DummyTropesApi
-import com.peterparameter.troper.utils.TropesApi
-import kotlinx.coroutines.runBlocking
-import org.http4k.core.Uri
+import kotlinx.coroutines.*
 
 class ArticleViewModel(private val articleSource: ArticleSource) : ViewModel() {
     private val tropesAPI: RetrievalApi = DummyApi()
