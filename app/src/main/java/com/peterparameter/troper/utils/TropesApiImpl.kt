@@ -1,31 +1,23 @@
 package com.peterparameter.troper.utils
 
-import arrow.core.Try
 import arrow.effects.IO
-import com.peterparameter.troper.domain.ArticleInfo
-import com.peterparameter.troper.domain.Parser
-import kotlinx.coroutines.Deferred
-import org.http4k.client.JettyClient
-import org.http4k.core.Method
-import org.http4k.core.Request
+import com.peterparameter.troper.domain.Article
 import org.http4k.core.Uri
-import org.http4k.core.then
-import org.http4k.filter.ClientFilters
 
 class TropesApiImpl : TropesApi {
     private val randomUri: Uri = Uri.of("https://tvtropes.org/pmwiki/randomitem.php")
 
-    override fun getRandomArticle(): IO<ArticleInfo> = getParsedArticle(randomUri)
+    override fun getRandomArticle(): IO<Article> = getParsedArticle(randomUri)
 
     private var mainJS: String? = null
 
 
 
-    override fun getParsedArticle(url: Uri): IO<ArticleInfo> =
+    override fun getParsedArticle(url: Uri): IO<Article> =
         IO.raiseError(NotImplementedError())
 //            fetchAndParseArticle(url)
 
-//    private suspend fun fetchAndParseArticle(url: Uri): Try<ArticleInfo> {
+//    private suspend fun fetchAndParseArticle(url: Uri): Try<Article> {
 //        val htmlResponse = fetchArticleAsync(url).await()
 ////        val script = fetchScript()
 //        return htmlResponse.flatMap { Parser.parse(it, "").toTry() }

@@ -3,7 +3,7 @@ package com.peterparameter.troper.view
 import android.content.Context
 import android.view.View
 import androidx.core.view.isVisible
-import com.peterparameter.troper.domain.ArticleInfo
+import com.peterparameter.troper.domain.Article
 import com.peterparameter.troper.utils.TropesWebClient
 import com.peterparameter.troper.utils.webView
 import splitties.experimental.InternalSplittiesApi
@@ -23,9 +23,9 @@ class ArticleView(override val ctx: Context) : Ui {
             busyIndicator.isVisible = value
         }
 
-    fun setup(articleInfo: ArticleInfo) {
-        articleContentView.loadData(articleInfo.content, "text/html", "UTF-8")
-        title.text = articleInfo.title
+    fun setup(article: Article) {
+        articleContentView.loadData(article.content, "text/html", "UTF-8")
+        title.text = article.title
     }
 
     override val root by lazy { content }

@@ -1,6 +1,6 @@
 package com.peterparameter.troper
 
-import com.peterparameter.troper.domain.ArticleInfo
+import com.peterparameter.troper.domain.Article
 import com.peterparameter.troper.domain.Parser
 import com.peterparameter.troper.utils.TestArticle
 import com.peterparameter.troper.utils.deserializeList
@@ -30,13 +30,13 @@ class ParserUnitTest {
         assertEquals(5, wrapped.subpages.size)
     }
 
-    private fun createExampleArticle(): ArticleInfo = Parser.parse(TestArticle.content, TestArticle.script).getOrThrow()
+    private fun createExampleArticle(): Article = Parser.parse(TestArticle.content, TestArticle.script).getOrThrow()
 
     @Test
     fun serializeDeserializeList() {
         val list = arrayOf(createExampleArticle())
         val ser = serialize(list)
-        val des = deserializeList<ArticleInfo>(ser).getOrThrow()
+        val des = deserializeList<Article>(ser).getOrThrow()
 
         assertEquals(list.size, des.size)
     }
