@@ -11,7 +11,7 @@ class ArticleWrapper : IKsoup("#main-content") {
         val url by bindLink("a.subpage-link")
     }
 
-    class Article : IKsoup("#main-article")
+    class Article : IKsoup("#main-articleSource")
 
     val article: Article by bindClass(Article(), this)
 

@@ -11,6 +11,6 @@ class DummyTropesApi : TropesApi {
     }
 
     override fun getParsedArticle(url: Uri): IO<Article> = Parser.parse(TestArticle.content, TestArticle.script)
-        .toEither { Error("Could not parse article.") }
+        .toEither { Error("Could not parse articleSource.") }
         .fold({IO.raiseError<Article>(it)}, IO.Companion::just)
 }

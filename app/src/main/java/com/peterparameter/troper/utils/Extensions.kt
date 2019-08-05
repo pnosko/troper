@@ -1,5 +1,6 @@
 package com.peterparameter.troper.utils
 
+import androidx.lifecycle.MutableLiveData
 import arrow.core.Option
 import arrow.core.Try
 
@@ -18,3 +19,14 @@ fun <T> Option<T>.toTry(): Try<T> = Try{this.getOrThrow()}
 
 fun <T> List<T>.zipWithIndex(): List<Pair<T, Int>> = this.zip(0.rangeTo(this.size))
 
+fun <T, C : MutableList<T>> MutableLiveData<C>.add(item: T) {
+    val collection = this.value
+    collection?.add(item)
+    this.value = collection
+}
+
+fun <T, C : MutableList<T>> MutableLiveData<C>.remove(item: T) {
+    val collection = this.value
+    collection?.remove(item)
+    this.value = collection
+}

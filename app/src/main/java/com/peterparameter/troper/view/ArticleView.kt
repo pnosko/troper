@@ -30,11 +30,12 @@ class ArticleView(override val ctx: Context) : Ui {
 
     override val root by lazy { content }
 
-    private val content =
+    private val content by lazy {
         verticalLayout {
             add(articleContentView, lParams(matchParent, matchParent) { })
             add(busyIndicator, lParams(matchParent, matchParent) { gravityCenter })
         }
+    }
 
     private val title by lazy { textView {} }
 

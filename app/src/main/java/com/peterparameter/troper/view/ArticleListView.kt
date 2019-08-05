@@ -8,6 +8,7 @@ import androidx.viewpager2.TabLayoutMediator
 import arrow.core.getOrElse
 import com.google.android.material.tabs.TabLayout
 import com.peterparameter.troper.domain.ArticleSource
+import com.peterparameter.troper.utils.legacyViewPager
 import com.peterparameter.troper.utils.viewPager
 import splitties.arch.lifecycle.ObsoleteSplittiesLifecycleApi
 import splitties.experimental.InternalSplittiesApi
@@ -20,14 +21,12 @@ import kotlin.contracts.ExperimentalContracts
 @InternalSplittiesApi
 class ArticleListView(
     override val ctx: Context,
-    supportFragmentManager: FragmentManager
+    private val pagerAdapter: ArticlesPagerAdapter
 ) : Ui {
 
     private val s = MaterialComponentsStyles(ctx)
 
     override val root by lazy { createContent() }
-
-    private val pagerAdapter = ArticlesPagerAdapter(supportFragmentManager, (ctx as FragmentActivity).lifecycle)
 
     private val articlePager = viewPager {
         adapter = pagerAdapter
@@ -35,10 +34,10 @@ class ArticleListView(
 
     private val tabLayout = s.tabLayout.default()
 
-    private val mediator = TabLayoutMediator(tabLayout, articlePager, ::configureTab)
+//    private val mediator = TabLayoutMediator(tabLayout, articlePager, ::configureTab)
 
     private fun createContent(): View {
-        mediator.attach()
+//        mediator.attach()
         return verticalLayout {
             add(tabLayout, lParams {  })
             add(articlePager, lParams {  })
@@ -49,7 +48,7 @@ class ArticleListView(
         tab.text = pagerAdapter.titleForIndex(position).getOrElse { "<LOADING>" }
     }
 
-    fun addArticle(article: ArticleSource) {
+    fun addArticleSource(article: ArticleSource) {
         pagerAdapter.add(article)
     }
 

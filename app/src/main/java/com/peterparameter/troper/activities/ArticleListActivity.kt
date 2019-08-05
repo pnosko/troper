@@ -27,7 +27,13 @@ class ArticleListActivity : FragmentActivity() {
 
     private lateinit var subscription: Disposable
 
-    private val articleListVM: ArticleListViewModel by activityScope()
+    private val articleListVM: ArticleListViewModel by activityScope {
+        val sources: List<ArticleSource> = withExtras(ArticlesSpec) {
+            articles
+        }
+
+        ArticleListViewModel(sources, supportFragmentManager, lifecycle)
+    }
 
     object ArticlesSpec : BundleSpec() {
         var articles: List<ArticleSource> by bundle()
@@ -36,11 +42,11 @@ class ArticleListActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val ui = ArticleListView(this, supportFragmentManager)
+        val ui = ArticleListView(this, articleListVM.pagerAdapter)
 
         subscription = CompositeDisposable(
-            EventBus.filter<ArticleAddedEvent>().subscribe { addArticle(ui, it.article) },
-            EventBus.filter<ArticleRemovedEvent>().subscribe { removeArticle(ui, it.article) }
+            EventBus.filter<ArticleAddedEvent>().subscribe { addArticleSource(ui, it.articleSource) },
+            EventBus.filter<ArticleRemovedEvent>().subscribe { removeArticleSource(ui, it.articleSource) }
         )
 
         withExtras(ArticlesSpec) {
@@ -50,12 +56,12 @@ class ArticleListActivity : FragmentActivity() {
         setContentView(ui)
     }
 
-    private fun addArticle(ui: ArticleListView, articleSource: ArticleSource) {
+    private fun addArticleSource(ui: ArticleListView, articleSource: ArticleSource) {
         articleListVM.addItem(articleSource)
-        ui.addArticle(articleSource)
+        ui.addArticleSource(articleSource)
     }
 
-    private fun removeArticle(ui: ArticleListView, articleSource: ArticleSource) {
+    private fun removeArticleSource(ui: ArticleListView, articleSource: ArticleSource) {
         articleListVM.removeItem(articleSource)
         ui.removeArticle(articleSource)
     }
