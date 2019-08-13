@@ -43,10 +43,6 @@ class LegacyArticlesPagerAdapter(
     }
 
     fun titleForIndex(position: Int): Option<String> {
-        return fragments.getOrNull(position).toOption()
-            .filter { it.isInitialized }
-            .flatMap {
-                it.articleVM.article.mapNotNull { it.title }.value.toOption()
-            }
+        return Option("")
     }
 }

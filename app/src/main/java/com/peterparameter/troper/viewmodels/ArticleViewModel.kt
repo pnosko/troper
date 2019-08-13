@@ -10,6 +10,7 @@ import com.peterparameter.troper.domain.ArticleSource
 import kotlinx.coroutines.*
 
 class ArticleViewModel(private val articleSource: ArticleSource) : ViewModel() {
+    // TODO: Inject
     private val tropesAPI: RetrievalApi = DummyApi()
 
     private val articleMutable = MutableLiveData<Article>()

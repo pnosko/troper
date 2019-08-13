@@ -22,11 +22,7 @@ class ArticleFragment : Fragment() {
         fun create(articleSource: ArticleSource): ArticleFragment = ArticleFragment().apply { this.articleSource = articleSource }
     }
 
-    private val articleVMLazy = fragmentScope{ArticleViewModel(articleSource)}
-
-    val articleVM by articleVMLazy
-
-    val isInitialized = articleVMLazy.isInitialized()
+    val articleVM by fragmentScope{ArticleViewModel(articleSource)}
 
     var articleSource: ArticleSource by arg()
 
