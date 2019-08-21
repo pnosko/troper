@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity(){
 
     private fun createUi(): Ui {
         val ui = MainView(this)
-//        setContentView(ui)
+
         ui.random.onClick {
             start(ArticleListActivity){ _, extrasSpec ->
                 extrasSpec.articles = listOf(RandomArticle)

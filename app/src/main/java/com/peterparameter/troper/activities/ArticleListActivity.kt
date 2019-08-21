@@ -5,6 +5,8 @@ import androidx.fragment.app.FragmentActivity
 import com.peterparameter.troper.domain.*
 import com.peterparameter.troper.utils.EventBus
 import com.peterparameter.troper.view.ArticleListView
+import com.peterparameter.troper.view.DummyFragment
+import com.peterparameter.troper.view.DummyPagerAdapter
 import splitties.views.dsl.core.*
 import splitties.bundle.BundleSpec
 import splitties.bundle.bundle

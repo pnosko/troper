@@ -10,6 +10,7 @@ import com.peterparameter.troper.utils.EventBus
 import com.peterparameter.troper.utils.remove
 import com.peterparameter.troper.utils.add
 import com.peterparameter.troper.view.ArticlesPagerAdapter
+import com.peterparameter.troper.view.DummyPagerAdapter
 import splitties.arch.lifecycle.ObsoleteSplittiesLifecycleApi
 import splitties.arch.lifecycle.mapNotNull
 import splitties.experimental.InternalSplittiesApi
@@ -18,7 +19,7 @@ import kotlin.contracts.ExperimentalContracts
 @InternalSplittiesApi
 @ExperimentalContracts
 @ObsoleteSplittiesLifecycleApi
-class ArticleListViewModel(initialSources: List<ArticleSource> = emptyList(), fragmentManager: FragmentManager, lifecycle: Lifecycle): ViewModel() {
+class ArticleListViewModel(initialSources: List<ArticleSource>, fragmentManager: FragmentManager, lifecycle: Lifecycle): ViewModel() {
     private val sources = MutableLiveData(initialSources.toMutableList())
 
     private val articlesModifiable = MutableLiveData<MutableList<Article>>(mutableListOf())
