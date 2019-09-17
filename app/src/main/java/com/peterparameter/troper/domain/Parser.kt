@@ -20,7 +20,7 @@ object Parser {
 
             val cleaned = cleanup(htmlContent)
             val content = wrap(title, cleaned, rawScript)
-            val subpages: List<ArticleLink> = parsed.subpages.map(::createLinks).flatten()
+            val subpages: List<ArticleDescriptor> = parsed.subpages.map(::createLinks).flatten()
             Article(title, content, subpages)
         }
     }
@@ -40,11 +40,11 @@ object Parser {
         return article.replace("<hr>", "")
     }
 
-    private fun createLinks(subpage: ArticleWrapper.Subpage): Option<ArticleLink> {
+    private fun createLinks(subpage: ArticleWrapper.Subpage): Option<ArticleDescriptor> {
         return subpage.title.toOption()
             .flatMap { t ->
                 subpage.url.toOption()
-                    .map{ u -> ArticleLink(t, u) }
+                    .map{ u -> ArticleDescriptor(t, u) }
             }
     }
 

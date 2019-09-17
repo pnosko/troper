@@ -5,8 +5,6 @@ import androidx.fragment.app.FragmentActivity
 import com.peterparameter.troper.domain.*
 import com.peterparameter.troper.utils.EventBus
 import com.peterparameter.troper.view.ArticleListView
-import com.peterparameter.troper.view.DummyFragment
-import com.peterparameter.troper.view.DummyPagerAdapter
 import splitties.views.dsl.core.*
 import splitties.bundle.BundleSpec
 import splitties.bundle.bundle
@@ -27,45 +25,32 @@ import splitties.arch.lifecycle.activityScope
 class ArticleListActivity : FragmentActivity() {
     companion object : ActivityIntentSpec<ArticleListActivity, ArticlesSpec> by activitySpec(ArticlesSpec)
 
-    private lateinit var subscription: Disposable
+    private var subscription: Disposable
 
     private val articleListVM: ArticleListViewModel by activityScope {
         val sources: List<ArticleSource> = withExtras(ArticlesSpec) {
             articles
         }
 
-        ArticleListViewModel(sources, supportFragmentManager, lifecycle)
+        ArticleListViewModel(sources)
     }
 
     object ArticlesSpec : BundleSpec() {
         var articles: List<ArticleSource> by bundle()
     }
 
+    init {
+        subscription = CompositeDisposable(
+            EventBus.filter<AddArticleCommand>().subscribe { articleListVM.addItem(it.articleSource) },
+            EventBus.filter<ArticleRemovedEvent>().subscribe { articleListVM.removeItem(it.articleSource) }
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val ui = ArticleListView(this, articleListVM.pagerAdapter)
-
-        subscription = CompositeDisposable(
-            EventBus.filter<ArticleAddedEvent>().subscribe { addArticleSource(ui, it.articleSource) },
-            EventBus.filter<ArticleRemovedEvent>().subscribe { removeArticleSource(ui, it.articleSource) }
-        )
-
-        withExtras(ArticlesSpec) {
-            articles.forEach{ EventBus.post(ArticleAddedEvent(it)) }
-        }
-
+        val ui = ArticleListView(this, supportFragmentManager, lifecycle, articleListVM)
         setContentView(ui)
-    }
-
-    private fun addArticleSource(ui: ArticleListView, articleSource: ArticleSource) {
-        articleListVM.addItem(articleSource)
-        ui.addArticleSource(articleSource)
-    }
-
-    private fun removeArticleSource(ui: ArticleListView, articleSource: ArticleSource) {
-        articleListVM.removeItem(articleSource)
-        ui.removeArticle(articleSource)
     }
 
     override fun onDestroy() {

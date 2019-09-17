@@ -22,9 +22,9 @@ class ArticleFragment : Fragment() {
         fun create(articleSource: ArticleSource): ArticleFragment = ArticleFragment().apply { this.articleSource = articleSource }
     }
 
-    val articleVM by fragmentScope{ArticleViewModel(articleSource)}
-
     var articleSource: ArticleSource by arg()
+
+    private val articleVM by fragmentScope{ArticleViewModel(articleSource)}
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val ui = ArticleView(context!!)

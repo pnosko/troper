@@ -3,10 +3,8 @@ package com.peterparameter.troper.utils
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import arrow.core.toOption
-import com.peterparameter.troper.domain.ArticleAddedEvent
+import com.peterparameter.troper.domain.AddArticleCommand
 import com.peterparameter.troper.domain.ArticleUri
-import kotlinx.coroutines.runBlocking
 import org.http4k.core.Uri
 import java.util.regex.Pattern
 
@@ -23,7 +21,8 @@ class TropesWebClient : WebViewClient() {
     }
 
     private fun addNewArticle(url: String) {
-        EventBus.post(ArticleAddedEvent(ArticleUri(url)))
+        // TODO: Use VM to dispatch event!
+        EventBus.post(AddArticleCommand(ArticleUri(url)))
     }
 
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
