@@ -1,19 +1,16 @@
 package com.peterparameter.troper.utils
 
-import arrow.core.Try
-import arrow.core.extensions.either.applicativeError.raiseError
 import arrow.effects.IO
-import arrow.effects.IO.*
-import com.peterparameter.troper.domain.ArticleInfo
+import com.peterparameter.troper.domain.Article
 import com.peterparameter.troper.domain.Parser
 import org.http4k.core.Uri
 
 class DummyTropesApi : TropesApi {
-    override fun getRandomArticle(): IO<ArticleInfo> {
+    override fun getRandomArticle(): IO<Article> {
         return getParsedArticle(Uri.of(""))       // Dude!
     }
 
-    override fun getParsedArticle(url: Uri): IO<ArticleInfo> = Parser.parse(TestArticle.content, TestArticle.script)
-        .toEither { Error("Could not parse article.") }
-        .fold({IO.raiseError<ArticleInfo>(it)}, IO.Companion::just)
+    override fun getParsedArticle(url: Uri): IO<Article> = Parser.parse(TestArticle.content, TestArticle.script)
+        .toEither { Error("Could not parse articleSource.") }
+        .fold({IO.raiseError<Article>(it)}, IO.Companion::just)
 }

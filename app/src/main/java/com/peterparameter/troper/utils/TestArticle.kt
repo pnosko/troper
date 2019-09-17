@@ -45,7 +45,7 @@ function setAllFolders(how){var way=""+how;if(way=="")way="none";if(way=="closed
 <meta name="twitter:image:src" content="https://static.tvtropes.org/pmwiki/pub/images/MagicAIsMagicA_7655.png" />
 <meta property="og:site_name" content="TV Tropes" />
 <meta property="og:locale" content="en_US" />
-<meta property="article:publisher" content="https://www.facebook.com/tvtropes" />
+<meta property="articleSource:publisher" content="https://www.facebook.com/tvtropes" />
 <meta property="og:title" content="Magic A Is Magic A - TV Tropes" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://tvtropes.org/pmwiki/pmwiki.php/Main/MagicAIsMagicA" />
@@ -218,7 +218,7 @@ function setAllFolders(how){var way=""+how;if(way=="")way="none";if(way=="closed
 <form class="search" action="/pmwiki/search_result.php">
 <input type="text" name="q" class="search-box" placeholder="Search" value="" required>
 <input type="submit" class="submit-button" value="&#xf002;" />
-<input type="hidden" name="search_type" value="article">
+<input type="hidden" name="search_type" value="articleSource">
 <input type="hidden" name="page_type" value="all">
 <input type="hidden" name="cx" value="partner-pub-6610802604051523:amzitfn8e7v">
 <input type="hidden" name="cof" value="FORID:10">
@@ -283,7 +283,7 @@ function setAllFolders(how){var way=""+how;if(way=="")way="none";if(way=="closed
 <form class="search" action="/pmwiki/search_result.php" style="margin:10px -5px -6px -5px;">
 <input type="text" name="q" class="search-box" placeholder="Search" value="" required>
 <input type="submit" class="submit-button" value="&#xf002;" />
-<input type="hidden" name="search_type" value="article">
+<input type="hidden" name="search_type" value="articleSource">
 <input type="hidden" name="page_type" value="all">
 <input type="hidden" name="cx" value="partner-pub-6610802604051523:amzitfn8e7v">
 <input type="hidden" name="cof" value="FORID:10">
@@ -315,9 +315,9 @@ function setAllFolders(how){var way=""+how;if(way=="")way="none";if(way=="closed
 <nav class="actions-wrapper" itemscope itemtype="http://schema.org/SiteNavigationElement">
 <ul id="top_main_list" class="page-actions ss-delay">
 <li class="link-edit">
-<a rel="nofollow" class="article-edit-button" data-modal-target="login" href="/pmwiki/pmwiki.php/Main/MagicAIsMagicA?action=edit">
+<a rel="nofollow" class="articleSource-edit-button" data-modal-target="login" href="/pmwiki/pmwiki.php/Main/MagicAIsMagicA?action=edit">
 <i class="fa fa-pencil"></i> Edit Page</a></li><li class="link-related"><a href="/pmwiki/relatedsearch.php?term=Main/MagicAIsMagicA">
-<i class="fa fa-share-alt"></i> Related</a></li><li class="link-history"><a href="/pmwiki/article_history.php?article=Main.MagicAIsMagicA">
+<i class="fa fa-share-alt"></i> Related</a></li><li class="link-history"><a href="/pmwiki/article_history.php?articleSource=Main.MagicAIsMagicA">
 <i class="fa fa-history"></i> History</a></li><li class="link-discussion"><a href="/pmwiki/remarks.php?trope=Main.MagicAIsMagicA">
 <i class="fa fa-comment"></i> Discussion</a></li> </ul>
 <button id="top_more_button" onclick="toggle_more_menu('top');" type="button" class="nav__dropdown-toggle">More</button>
@@ -331,7 +331,7 @@ You need to <a href="/pmwiki/login.php" style="color:#21A0E8">login</a> to do th
 </div>
 </div>
 <div id="main-content" class="page-Article ">
-<article id="main-entry" class="with-sidebar">
+<articleSource id="main-entry" class="with-sidebar">
 
 <input type="hidden" id="groupname-hidden" value="Main" />
 <input type="hidden" id="title-hidden" value="MagicAIsMagicA" />
@@ -411,7 +411,7 @@ Magic A Is Magic A
 </li>
 </ul>
 </nav>
-<div id="main-article" class="article-content retro-folders">
+<div id="main-articleSource" class="articleSource-content retro-folders">
 <p></p><div class="quoteright" style="width:292px;"><a class="twikilink" href="/pmwiki/pmwiki.php/Webcomic/ElGoonishShive" title="/pmwiki/pmwiki.php/Webcomic/ElGoonishShive"><img src="https://static.tvtropes.org/pmwiki/pub/images/MagicAIsMagicA_7655.png" class="embeddedimage" border="0" alt="https://static.tvtropes.org/pmwiki/pub/images/MagicAIsMagicA_7655.png"></a></div>
 <div class="acaptionright" style="width:292px;">Even <a class="twikilink" href="/pmwiki/pmwiki.php/Main/SupernaturalMartialArts" title="/pmwiki/pmwiki.php/Main/SupernaturalMartialArts">Supernatural Martial Arts</a> is part of this magic system.</div>
 <p></p><div class="indent"><em>"We don't ask that you stay within the bounds of physics, but at least follow the rules you freaking made up."</em>
@@ -776,7 +776,7 @@ Magic A Is Magic A
 </li><li> In <em><a class="twikilink" href="/pmwiki/pmwiki.php/Webcomic/Homestuck" title="/pmwiki/pmwiki.php/Webcomic/Homestuck">Homestuck</a></em> the video game Sburb (or Sgrub), around which the plot is based, has a series of strict, consistent rules. Its <a class="twikilink" href="/pmwiki/pmwiki.php/Main/TimeTravel" title="/pmwiki/pmwiki.php/Main/TimeTravel">Time Travel</a> rules are also internally consistent. The few "magical" concepts that pop up (usually with Rose Lalonde) tend to be loosely defined and fairly inconsistent, because <em>real</em> magic (ie. not based on an explicit <a class="twikilink" href="/pmwiki/pmwiki.php/Main/RealityWarper" title="/pmwiki/pmwiki.php/Main/RealityWarper">Reality Warper</a>'s powers or on Sburb itself) <a class="twikilink" href="/pmwiki/pmwiki.php/Main/CatchPhrase" title="/pmwiki/pmwiki.php/Main/CatchPhrase">is fake as all shit</a>.
 </li><li> Despite the craziness of <em><a class="twikilink" href="/pmwiki/pmwiki.php/Webcomic/Educomix" title="/pmwiki/pmwiki.php/Webcomic/Educomix">Educomix</a></em>, certain things about the ecos are firmly established, e.g. urine is better than water. Also, the magic system is coincidentally based on letters &mdash; the known types of magic are Qmagic (used by Qwizards, and essentially the same as "normal" magic), Wmagic (used by the Whats in the <a class="twikilink" href="/pmwiki/pmwiki.php/VideoGame/Portal" title="/pmwiki/pmwiki.php/VideoGame/Portal">Portal</a> parody), Emagic (there's only one spell, but its effects are <a class="twikilink" href="/pmwiki/pmwiki.php/Main/Magitek" title="/pmwiki/pmwiki.php/Main/Magitek">programmable by computer</a>), Rmagic (<a class="twikilink" href="/pmwiki/pmwiki.php/Main/SummonMagic" title="/pmwiki/pmwiki.php/Main/SummonMagic">Summon Magic</a>), and Tmagic(<a class="twikilink" href="/pmwiki/pmwiki.php/Main/TimeMaster" title="/pmwiki/pmwiki.php/Main/TimeMaster">affects time</a>).
 </li><li> <em><a class="twikilink" href="/pmwiki/pmwiki.php/Webcomic/Morphe" title="/pmwiki/pmwiki.php/Webcomic/Morphe">morphE</a></em> is set in the <a class="twikilink" href="/pmwiki/pmwiki.php/TabletopGame/MageTheAwakening" title="/pmwiki/pmwiki.php/TabletopGame/MageTheAwakening">Mage: The Awakening</a> canon and follows its rules of magic.
-</li><li> <em><a class="twikilink" href="/pmwiki/pmwiki.php/Webcomic/Unsounded" title="/pmwiki/pmwiki.php/Webcomic/Unsounded">Unsounded</a></em> calls its magic system "pymary", because calling it "magic" would imply something unknown and mystical. Not so with pymary, which has been researched extensively and functions according to clear-cut rules and limitations. And while it's channeled through a <a class="twikilink" href="/pmwiki/pmwiki.php/Main/LanguageOfMagic" title="/pmwiki/pmwiki.php/Main/LanguageOfMagic">Language of Magic</a>, a translated snippet of that language sounds a lot more like <em>programming code</em> than any regular incantation. <a class="urllink" href="http://www.casualvillain.com/Unsounded/world/index.php?title=Pymary">Here's an article<img src="https://static.tvtropes.org/pmwiki/pub/external_link.gif" height="12" width="12" style="border:none;"></a>.
+</li><li> <em><a class="twikilink" href="/pmwiki/pmwiki.php/Webcomic/Unsounded" title="/pmwiki/pmwiki.php/Webcomic/Unsounded">Unsounded</a></em> calls its magic system "pymary", because calling it "magic" would imply something unknown and mystical. Not so with pymary, which has been researched extensively and functions according to clear-cut rules and limitations. And while it's channeled through a <a class="twikilink" href="/pmwiki/pmwiki.php/Main/LanguageOfMagic" title="/pmwiki/pmwiki.php/Main/LanguageOfMagic">Language of Magic</a>, a translated snippet of that language sounds a lot more like <em>programming code</em> than any regular incantation. <a class="urllink" href="http://www.casualvillain.com/Unsounded/world/index.php?title=Pymary">Here's an articleSource<img src="https://static.tvtropes.org/pmwiki/pub/external_link.gif" height="12" width="12" style="border:none;"></a>.
 </li><li> <em><a class="twikilink" href="/pmwiki/pmwiki.php/Webcomic/MissingMonday" title="/pmwiki/pmwiki.php/Webcomic/MissingMonday">Missing Monday</a></em> has rules for who is eligible to visit another world and how to open the magic door. Monday followed the instructions in her favourite childhood storybook.
 </li><li> <em><a class="twikilink" href="/pmwiki/pmwiki.php/Webcomic/CucumberQuest" title="/pmwiki/pmwiki.php/Webcomic/CucumberQuest">Cucumber Quest</a></em>
 <ul><li> The Ripple Kingdom's magic gachapon machine. All of the capsules provide spells that will work, but they create items so mundane, or the ability to do things in such incredibly specific situations, that they're basically useless. Nautilus eventually saves everyone with her ability to order a pizza only if nobody is in the mood for it, allowing the group to escape an airship crash by jumping into the delivery vehicle&mdash;but she can't repeat it when she's in Rosemaster's prison, because she actually <em>is</em> in the mood for pizza.
@@ -847,7 +847,7 @@ Magic A Is Magic A
 
 <hr>
 </div>
-<div class="footer-article-ad">
+<div class="footer-articleSource-ad">
 <div class='proper-ad-unit '>
 <div id='proper-ad-tvtropes_main_2'> <script>propertag.cmd.push(function() { proper_display('tvtropes_main_2'); });</script> </div>
 </div> </div>
@@ -1025,7 +1025,7 @@ Magic A Is Magic A
 </ul>
 </div>
 </div>
-</article>
+</articleSource>
 <div id="main-content-sidebar">
 <div class="sidebar-item quick-links" itemtype="http://schema.org/SiteNavigationElement">
 <a href="/pmwiki/query.php?type=att">Ask The Tropers</a>

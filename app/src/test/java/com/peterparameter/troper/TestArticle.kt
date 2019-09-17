@@ -20,7 +20,7 @@ object TestArticle {
     <meta name="twitter:image:src" content="https://static.tvtropes.org/logo_blue_small.png">
     <meta property="og:site_name" content="TV Tropes">
     <meta property="og:locale" content="en_US">
-    <meta property="article:publisher" content="https://www.facebook.com/tvtropes">
+    <meta property="articleSource:publisher" content="https://www.facebook.com/tvtropes">
     <meta property="og:title" content="Pair the Dumb Ones - TV Tropes">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://tvtropes.org/pmwiki/pmwiki.php/Main/PairTheDumbOnes">
@@ -95,7 +95,7 @@ object TestArticle {
                     <form class="search" action="/pmwiki/search_result.php">
                         <input type="text" name="q" class="search-box" placeholder="Search" value="" required="">
                         <input type="submit" class="submit-button" value="">
-                        <input type="hidden" name="search_type" value="article">
+                        <input type="hidden" name="search_type" value="articleSource">
                         <input type="hidden" name="page_type" value="all">
                         <input type="hidden" name="cx" value="partner-pub-6610802604051523:amzitfn8e7v">
                         <input type="hidden" name="cof" value="FORID:10">
@@ -173,7 +173,7 @@ object TestArticle {
         <form class="search" action="/pmwiki/search_result.php" style="margin:10px -5px -6px -5px;">
             <input type="text" name="q" class="search-box" placeholder="Search" value="" required="">
             <input type="submit" class="submit-button" value="">
-            <input type="hidden" name="search_type" value="article">
+            <input type="hidden" name="search_type" value="articleSource">
             <input type="hidden" name="page_type" value="all">
             <input type="hidden" name="cx" value="partner-pub-6610802604051523:amzitfn8e7v">
             <input type="hidden" name="cof" value="FORID:10">
@@ -209,14 +209,14 @@ object TestArticle {
                 itemtype="http://schema.org/SiteNavigationElement" style="" instance="0">
                 <ul class="page-actions ss-delay">
                     <li class="link-edit">
-                        <a rel="nofollow" class="article-edit-button" data-modal-target="login"
+                        <a rel="nofollow" class="articleSource-edit-button" data-modal-target="login"
                             href="/pmwiki/pmwiki.php/Main/PairTheDumbOnes?action=edit" data-ss1551747943="1">
                             <i class="fa fa-pencil">
                             </i> Edit Page</a></li>
                     <li class="link-related"><a href="/pmwiki/relatedsearch.php?term=Main/PairTheDumbOnes"
                             data-ss1551747943="1">
                             <i class="fa fa-share-alt"></i> Related</a></li>
-                    <li class="link-history"><a href="/pmwiki/article_history.php?article=Main.PairTheDumbOnes"
+                    <li class="link-history"><a href="/pmwiki/article_history.php?articleSource=Main.PairTheDumbOnes"
                             data-ss1551747943="1">
                             <i class="fa fa-history"></i> History</a></li>
                     <li class="link-discussion"><a href="/pmwiki/remarks.php?trope=Main.PairTheDumbOnes"
@@ -246,7 +246,7 @@ object TestArticle {
             </div>
         </div>
         <div id="main-content" class="page-Article ">
-            <article id="main-entry" class="with-sidebar">
+            <articleSource id="main-entry" class="with-sidebar">
 
                 <input type="hidden" id="groupname-hidden" value="Main">
                 <input type="hidden" id="title-hidden" value="PairTheDumbOnes">
@@ -268,14 +268,14 @@ object TestArticle {
                 <nav id="mobile-actions-bar" class="mobile-actions-wrapper mobile-on">
                     <ul class="page-actions ss-delay">
                         <li class="link-edit">
-                            <a rel="nofollow" class="article-edit-button" data-modal-target="login"
+                            <a rel="nofollow" class="articleSource-edit-button" data-modal-target="login"
                                 href="/pmwiki/pmwiki.php/Main/PairTheDumbOnes?action=edit" data-ss1551747943="1">
                                 <i class="fa fa-pencil">
                                 </i> Edit Page</a></li>
                         <li class="link-related"><a href="/pmwiki/relatedsearch.php?term=Main/PairTheDumbOnes"
                                 data-ss1551747943="1">
                                 <i class="fa fa-share-alt"></i> Related</a></li>
-                        <li class="link-history"><a href="/pmwiki/article_history.php?article=Main.PairTheDumbOnes"
+                        <li class="link-history"><a href="/pmwiki/article_history.php?articleSource=Main.PairTheDumbOnes"
                                 data-ss1551747943="1">
                                 <i class="fa fa-history"></i> History</a></li>
                         <li class="link-discussion"><a href="/pmwiki/remarks.php?trope=Main.PairTheDumbOnes"
@@ -359,7 +359,7 @@ object TestArticle {
                         </li>
                     </ul>
                 </nav>
-                <div id="main-article" class="article-content retro-folders">
+                <div id="main-articleSource" class="articleSource-content retro-folders">
                     <p>If a show features two dumb or ditzy characters, there are high chances they will be paired
                         together in a romantic relationship, often for comedic reasons or because <a class="twikilink"
                             href="/pmwiki/pmwiki.php/Main/StrangeMindsThinkAlike"
@@ -660,7 +660,7 @@ object TestArticle {
                         </ul>
                     </div>
                 </div>
-            </article>
+            </articleSource>
             <div id="main-content-sidebar">
                 <div class="sidebar-item quick-links" itemtype="http://schema.org/SiteNavigationElement">
                     <a href="/pmwiki/query.php?type=att" data-ss1551747943="1">Ask The Tropers</a>

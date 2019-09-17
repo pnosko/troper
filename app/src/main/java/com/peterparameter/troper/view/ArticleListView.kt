@@ -2,8 +2,12 @@ package com.peterparameter.troper.view
 
 import android.content.Context
 import androidx.fragment.app.FragmentManager
-import com.peterparameter.troper.domain.ArticleSource
+import androidx.lifecycle.Lifecycle
+import arrow.core.getOrElse
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.peterparameter.troper.utils.viewPager
+import com.peterparameter.troper.viewmodels.ArticleListViewModel
 import splitties.arch.lifecycle.ObsoleteSplittiesLifecycleApi
 import splitties.experimental.InternalSplittiesApi
 import splitties.views.dsl.core.*
@@ -15,31 +19,40 @@ import kotlin.contracts.ExperimentalContracts
 @InternalSplittiesApi
 class ArticleListView(
     override val ctx: Context,
-    supportFragmentManager: FragmentManager
+    fragmentManager: FragmentManager,
+    lifecycle: Lifecycle,
+    articleListVM: ArticleListViewModel
 ) : Ui {
+
     private val s = MaterialComponentsStyles(ctx)
 
-    override val root by lazy { verticalLayout {
-        add(tabLayout, lParams {  })
-        add(articlePager, lParams {  })
-    } }
+    override val root by lazy {
+        TabLayoutMediator(tabLayout, articlePager, ::configureTab).attach()
+        content
+    }
 
-    private val pagerAdapter = ArticlesPagerAdapter(supportFragmentManager)
+    private val pagerAdapter = ArticlesPagerAdapter(fragmentManager, lifecycle, articleListVM)
 
     private val articlePager = viewPager {
         adapter = pagerAdapter
     }
 
-    private val tabLayout = s.tabLayout.default {
-        setupWithViewPager(articlePager)
+    private val tabLayout = s.tabLayout.default()
+
+    private val content by lazy {
+        verticalLayout {
+            add(tabLayout, lParams {
+                width = matchParent
+                height = wrapContent
+            })
+            add(articlePager, lParams {
+                width = matchParent
+                height = matchParent
+            })
+        }
     }
 
-    fun addArticle(article: ArticleSource) {
-        pagerAdapter.add(article)
-        articlePager.currentItem = pagerAdapter.count - 1
-    }
-
-    fun removeArticle(article: ArticleSource) {
-        pagerAdapter.remove(article)
+    private fun configureTab(tab: TabLayout.Tab, position: Int) {
+        tab.text = pagerAdapter.titleForIndex(position).getOrElse { "<LOADING>" }
     }
 }

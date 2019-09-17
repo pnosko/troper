@@ -1,28 +1,39 @@
 package com.peterparameter.troper.viewmodels
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import arrow.effects.rx2.ObservableK
-import arrow.effects.rx2.k
 import com.peterparameter.troper.domain.*
-import io.reactivex.subjects.ReplaySubject
+import com.peterparameter.troper.utils.*
+import io.reactivex.Observable
+import io.reactivex.subjects.*
+import splitties.arch.lifecycle.ObsoleteSplittiesLifecycleApi
+import splitties.arch.lifecycle.mapNotNull
+import splitties.experimental.InternalSplittiesApi
+import kotlin.contracts.ExperimentalContracts
 
-// TODO: Is this useless??
-class ArticleListViewModel(initialSources: List<ArticleSource> = emptyList()): ViewModel() {
-    private val sources = initialSources.toMutableList()
-    private val collectionChangeSubject =
-        ReplaySubject.create<ArticleListEvent>()
+@InternalSplittiesApi
+@ExperimentalContracts
+@ObsoleteSplittiesLifecycleApi
+class ArticleListViewModel(initialSources: List<ArticleSource>): ViewModel() {
+    private val articleSourceChangedSubject = ReplaySubject.create<CollectionChangedEvent<ArticleSource>>()
+    private val sources = MutableLiveData(initialSources.toMutableList())
 
-    val articleSources: List<ArticleSource> = sources
+    init {
+        initialSources.forEach(::addItem)
+    }
 
-    val collectionChangeEventStream: ObservableK<ArticleListEvent> = collectionChangeSubject.k()
+    val articleSources: LiveData<List<ArticleSource>> = sources.mapNotNull { it }
+
+    val articleSourcesChanged: Observable<CollectionChangedEvent<ArticleSource>> = articleSourceChangedSubject
 
     fun addItem(item: ArticleSource) {
         sources.add(item)
-        collectionChangeSubject.onNext(ArticleAddedEvent(item))
+        articleSourceChangedSubject.onNext(ElementAdded(item))
     }
 
     fun removeItem(item: ArticleSource) {
         sources.remove(item)
-        collectionChangeSubject.onNext(ArticleRemovedEvent(item))
+        articleSourceChangedSubject.onNext(ElementRemoved(item))
     }
 }

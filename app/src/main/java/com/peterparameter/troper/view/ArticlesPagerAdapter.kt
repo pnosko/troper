@@ -1,9 +1,20 @@
 package com.peterparameter.troper.view
 
-import androidx.fragment.app.*
+import android.net.Uri
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import arrow.core.None
+import arrow.core.Option
 import arrow.core.toOption
 import com.peterparameter.troper.domain.ArticleSource
-import com.peterparameter.troper.utils.*
+import com.peterparameter.troper.domain.ArticleUri
+import com.peterparameter.troper.utils.ElementAdded
+import com.peterparameter.troper.utils.ElementRemoved
+import com.peterparameter.troper.utils.getOrThrow
+import com.peterparameter.troper.viewmodels.ArticleListViewModel
+import io.reactivex.disposables.Disposable
 import splitties.arch.lifecycle.ObsoleteSplittiesLifecycleApi
 import splitties.experimental.InternalSplittiesApi
 import kotlin.contracts.ExperimentalContracts
@@ -13,24 +24,47 @@ import kotlin.contracts.ExperimentalContracts
 @ExperimentalContracts
 @InternalSplittiesApi
 class ArticlesPagerAdapter(
-    fm: FragmentManager
-) : FragmentStatePagerAdapter(fm) {
+    fm: FragmentManager,
+    lc: Lifecycle,
+    private val articleListVM: ArticleListViewModel     // TODO: remove reference?
+) : FragmentStateAdapter(fm, lc) {
 
+    private var subscription: Disposable
     private val fragments: MutableList<ArticleFragment> = mutableListOf()
 
-    override fun getItem(index: Int): Fragment = fragments.getOrNull(index).toOption().getOrThrow()
+    override fun createFragment(position: Int): Fragment = fragments.getOrNull(position).toOption().getOrThrow()
 
-    override fun getCount(): Int = fragments.size
+    override fun getItemCount(): Int = fragments.size
 
-    override fun getPageTitle(position: Int): CharSequence? = "" //fragments[position].articleVM.
-
-    fun add(article: ArticleSource) {
-        fragments.add(ArticleFragment.create(article))
-        notifyDataSetChanged()
+    init {
+        subscription = articleListVM.articleSourcesChanged.subscribe {
+            when(it) {
+                is ElementAdded -> add(it.added)
+                is ElementRemoved -> remove(it.removed)
+            }
+        }
     }
 
-    fun remove(article: ArticleSource) {
-        fragments.remove(ArticleFragment.create(article))
-        notifyDataSetChanged()
+    private fun add(article: ArticleSource) {
+        val fragment = ArticleFragment.create(article)
+        fragments.add(fragment)
+        this.notifyDataSetChanged()
+    }
+
+    private fun remove(article: ArticleSource) {
+        fragments.removeIf { it.articleSource === article }
+        this.notifyDataSetChanged()
+    }
+
+    fun titleForIndex(position: Int): Option<String> {
+        return articleListVM.articleSources.value.toOption().flatMap { titleFromSource(it[position]) }
+    }
+
+    // TODO: consider removing articlesource abstraction altogether
+    private fun titleFromSource(articleSource: ArticleSource): Option<String> {
+        return when(articleSource) {
+            is ArticleUri   -> Uri.parse(articleSource.uri).lastPathSegment.toOption().map { it.replace("(.)([A-Z])", "$1 $2") }
+            else            -> None
+        }
     }
 }

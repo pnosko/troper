@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.peterparameter.troper.domain.ArticleSource
 import com.peterparameter.troper.viewmodels.ArticleViewModel
 import splitties.arch.lifecycle.ObsoleteSplittiesLifecycleApi
-import splitties.arch.lifecycle.activityScope
+import splitties.arch.lifecycle.fragmentScope
 import splitties.arch.lifecycle.observeNotNull
 import splitties.experimental.InternalSplittiesApi
 import splitties.fragmentargs.arg
@@ -22,9 +22,9 @@ class ArticleFragment : Fragment() {
         fun create(articleSource: ArticleSource): ArticleFragment = ArticleFragment().apply { this.articleSource = articleSource }
     }
 
-    private val articleVM: ArticleViewModel by activityScope{ArticleViewModel(articleSource)}
-
     var articleSource: ArticleSource by arg()
+
+    private val articleVM by fragmentScope{ArticleViewModel(articleSource)}
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val ui = ArticleView(context!!)

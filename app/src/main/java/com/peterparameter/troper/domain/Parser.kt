@@ -10,7 +10,7 @@ import org.jsoup.nodes.Entities
 import org.jsoup.safety.Whitelist
 
 object Parser {
-    fun parse(rawArticle: String, rawScript: String): Option<ArticleInfo> {
+    fun parse(rawArticle: String, rawScript: String): Option<Article> {
         val ks = Ksoup(stripRaw(rawArticle))
         return binding {
             val parsed = Try { ks.from<ArticleWrapper>(ArticleWrapper()) }.toOption().bind()
@@ -20,8 +20,8 @@ object Parser {
 
             val cleaned = cleanup(htmlContent)
             val content = wrap(title, cleaned, rawScript)
-            val subpages: List<ArticleLink> = parsed.subpages.map(::createLinks).flatten()
-            ArticleInfo(title, content, subpages)
+            val subpages: List<ArticleDescriptor> = parsed.subpages.map(::createLinks).flatten()
+            Article(title, content, subpages)
         }
     }
 
@@ -40,11 +40,11 @@ object Parser {
         return article.replace("<hr>", "")
     }
 
-    private fun createLinks(subpage: ArticleWrapper.Subpage): Option<ArticleLink> {
+    private fun createLinks(subpage: ArticleWrapper.Subpage): Option<ArticleDescriptor> {
         return subpage.title.toOption()
             .flatMap { t ->
                 subpage.url.toOption()
-                    .map{ u -> ArticleLink(t, u) }
+                    .map{ u -> ArticleDescriptor(t, u) }
             }
     }
 

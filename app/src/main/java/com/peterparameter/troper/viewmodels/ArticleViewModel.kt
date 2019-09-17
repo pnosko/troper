@@ -5,19 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.peterparameter.troper.api.DummyApi
 import com.peterparameter.troper.api.RetrievalApi
-import com.peterparameter.troper.domain.ArticleInfo
+import com.peterparameter.troper.domain.Article
 import com.peterparameter.troper.domain.ArticleSource
-import com.peterparameter.troper.utils.Attempt
-import com.peterparameter.troper.utils.DummyTropesApi
-import com.peterparameter.troper.utils.TropesApi
-import kotlinx.coroutines.runBlocking
-import org.http4k.core.Uri
+import kotlinx.coroutines.*
 
 class ArticleViewModel(private val articleSource: ArticleSource) : ViewModel() {
+    // TODO: Inject
     private val tropesAPI: RetrievalApi = DummyApi()
 
-    private val articleMutable = MutableLiveData<ArticleInfo>()
-    val article: LiveData<ArticleInfo> = articleMutable
+    private val articleMutable = MutableLiveData<Article>()
+    val article: LiveData<Article> = articleMutable
 
     private val isLoadingSettable = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = isLoadingSettable
@@ -41,8 +38,8 @@ class ArticleViewModel(private val articleSource: ArticleSource) : ViewModel() {
         isLoadingSettable.value = false
     }
 
-    private fun onSuccess(articleInfo: ArticleInfo) {
-        articleMutable.value = articleInfo
+    private fun onSuccess(article: Article) {
+        articleMutable.value = article
         isLoadingSettable.value = false
     }
 }
