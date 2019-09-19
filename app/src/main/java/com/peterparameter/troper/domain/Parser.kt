@@ -1,7 +1,8 @@
 package com.peterparameter.troper.domain
 
 import arrow.core.*
-import arrow.core.extensions.option.monad.binding
+import arrow.core.extensions.*
+import arrow.core.extensions.option.monad.monad
 import arrow.syntax.collections.flatten
 import com.fcannizzaro.ksoup.Ksoup
 import org.jsoup.Jsoup
@@ -12,7 +13,7 @@ import org.jsoup.safety.Whitelist
 object Parser {
     fun parse(rawArticle: String, rawScript: String): Option<Article> {
         val ks = Ksoup(stripRaw(rawArticle))
-        return binding {
+        return Option.monad().fx.monad {
             val parsed = Try { ks.from<ArticleWrapper>(ArticleWrapper()) }.toOption().bind()
             val title = parsed.title.toOption().bind()
             val element = parsed.article.element.toOption().bind()
@@ -22,7 +23,7 @@ object Parser {
             val content = wrap(title, cleaned, rawScript)
             val subpages: List<ArticleDescriptor> = parsed.subpages.map(::createLinks).flatten()
             Article(title, content, subpages)
-        }
+        }.fix()
     }
 
     private fun cleanup(htmlContent: String): String {

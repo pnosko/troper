@@ -1,7 +1,7 @@
 package com.peterparameter.troper.utils
 
 import arrow.core.extensions.StringContext
-import arrow.data.extensions.list.foldable.combineAll
+import arrow.core.extensions.list.foldable.combineAll
 
 object TestArticle {
     val script: String = """

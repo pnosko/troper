@@ -1,6 +1,6 @@
 package com.peterparameter.troper.api
 
-import arrow.effects.IO
+import arrow.fx.IO
 import com.peterparameter.troper.domain.Article
 import com.peterparameter.troper.domain.ArticleSource
 import com.peterparameter.troper.utils.DummyTropesApi

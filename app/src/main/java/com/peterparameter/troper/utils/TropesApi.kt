@@ -1,7 +1,7 @@
 package com.peterparameter.troper.utils
 
 import com.peterparameter.troper.domain.Article
-import arrow.effects.*
+import arrow.fx.IO
 import org.http4k.core.Uri
 
 interface TropesApi {

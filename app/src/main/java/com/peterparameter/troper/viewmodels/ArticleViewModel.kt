@@ -3,6 +3,7 @@ package com.peterparameter.troper.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.peterparameter.troper.api.DummyApi
 import com.peterparameter.troper.api.RetrievalApi
 import com.peterparameter.troper.domain.Article
@@ -23,14 +24,15 @@ class ArticleViewModel(private val articleSource: ArticleSource) : ViewModel() {
     val error: LiveData<String> = errorSettable
 
     init {
-        runBlocking { loadArticle() }
+        loadArticle()
     }
 
     private fun loadArticle() {
         this.isLoadingSettable.value = true
         errorSettable.value = null
 
-        tropesAPI.retrieve(articleSource).attempt().unsafeRunSync().fold(::onError, ::onSuccess)
+        val res = viewModelScope.async(Dispatchers.IO) { tropesAPI.retrieve(articleSource).attempt().suspended() }
+        viewModelScope.launch { res.await().fold(::onError, ::onSuccess) }
     }
 
     private fun onError(error: Throwable) {

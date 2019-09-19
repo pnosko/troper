@@ -1,6 +1,6 @@
 package com.peterparameter.troper.utils
 
-import arrow.effects.IO
+import arrow.fx.IO
 import com.peterparameter.troper.domain.Article
 import org.http4k.core.Uri
 
