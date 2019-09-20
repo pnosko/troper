@@ -5,22 +5,26 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.peterparameter.troper.domain.ArticleDescriptor
+import com.peterparameter.troper.utils.Id
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ArticlesDao {
     @Query("select * from articles")
-    fun all(): List<ArticleEntity>
+    suspend fun all(): List<ArticleEntity>
+
+    @Query("select * from articles where id = :id limit 1")
+    suspend fun getById(id: Id): ArticleEntity?
 
     @Query("select title, url from articles where id == :id limit 1")
-    fun getDescriptorById(id: Long): ArticleDescriptor
+    suspend fun getDescriptorById(id: Long): ArticleDescriptor?
 
     @Query("select title, url from articles where title == :title limit 1")
-    fun getDescriptorByTitle(title: String): ArticleDescriptor
+    suspend fun getDescriptorByTitle(title: String): ArticleDescriptor?
 
     @Insert
-    fun insert(article: ArticleEntity)
+    suspend fun insert(article: ArticleEntity): Long?
 
     @Delete
-    fun delete(article: ArticleEntity)
+    suspend fun delete(article: ArticleEntity): Int
 }

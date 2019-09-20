@@ -19,6 +19,9 @@ fun <T> Option<T>.toTry(): Try<T> = Try{this.getOrThrow()}
 
 fun <T> List<T>.zipWithIndex(): List<Pair<T, Int>> = this.zip(0.rangeTo(this.size))
 
+fun Any?.isNull(): Boolean = this === null
+fun Any?.notNull(): Boolean = !this.isNull()
+
 fun <T, C : MutableList<T>> MutableLiveData<C>.add(item: T) {
     val collection = this.value
     collection?.add(item)

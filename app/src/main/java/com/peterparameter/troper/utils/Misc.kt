@@ -4,10 +4,10 @@ import android.content.Context
 import android.view.View
 import android.webkit.WebView
 import androidx.fragment.app.Fragment
-import arrow.core.Either
-import arrow.core.Option
-import arrow.core.toOption
+import arrow.core.*
 import com.beust.klaxon.Klaxon
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 fun <T> identity(t: T): T { return t}
 
@@ -17,6 +17,17 @@ inline fun <reified T : Fragment> instanceOf(vararg params: Pair<String, Any>)
 }
 
 typealias Attempt<T> = Either<Throwable, T>
+typealias Id = Long
+
+object Attempts {
+    fun <T> eagerCatch(f: () -> T): Attempt<T> {
+        return try {
+            f().right()
+        } catch (t: Throwable) {
+            t.nonFatalOrThrow().left()
+        }
+    }
+}
 
 fun createApi(): TropesApi = DummyTropesApi()
 

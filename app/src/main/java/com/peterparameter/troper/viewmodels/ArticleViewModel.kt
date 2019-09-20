@@ -7,12 +7,18 @@ import androidx.lifecycle.viewModelScope
 import com.peterparameter.troper.api.DummyApi
 import com.peterparameter.troper.api.RetrievalApi
 import com.peterparameter.troper.domain.Article
+import com.peterparameter.troper.domain.ArticleLoadedEvent
 import com.peterparameter.troper.domain.ArticleSource
+import com.peterparameter.troper.persistence.ArticleRepository
+import com.peterparameter.troper.persistence.ArticlesDatabase
+import com.peterparameter.troper.persistence.RoomArticleRepository
+import com.peterparameter.troper.utils.EventBus
 import kotlinx.coroutines.*
 
 class ArticleViewModel(private val articleSource: ArticleSource) : ViewModel() {
     // TODO: Inject
     private val tropesAPI: RetrievalApi = DummyApi()
+    private val repository: ArticleRepository = RoomArticleRepository(ArticlesDatabase.invoke())
 
     private val articleMutable = MutableLiveData<Article>()
     val article: LiveData<Article> = articleMutable
@@ -43,5 +49,16 @@ class ArticleViewModel(private val articleSource: ArticleSource) : ViewModel() {
     private fun onSuccess(article: Article) {
         articleMutable.value = article
         isLoadingSettable.value = false
+        persistArticle(article)
+        notifyArticleLoaded(article)
+    }
+
+    private fun persistArticle(article: Article) {
+        // TODO: Error handling, effect mgmt
+        viewModelScope.launch { repository.saveArticle(article) }
+    }
+
+    private fun notifyArticleLoaded(article: Article) {
+        EventBus.post(ArticleLoadedEvent(articleSource, article))
     }
 }

@@ -11,7 +11,7 @@ import org.jsoup.nodes.Entities
 import org.jsoup.safety.Whitelist
 
 object Parser {
-    fun parse(rawArticle: String, rawScript: String): Option<Article> {
+    fun parse(url: String, rawArticle: String, rawScript: String): Option<Article> {
         val ks = Ksoup(stripRaw(rawArticle))
         return Option.monad().fx.monad {
             val parsed = Try { ks.from<ArticleWrapper>(ArticleWrapper()) }.toOption().bind()
@@ -22,7 +22,7 @@ object Parser {
             val cleaned = cleanup(htmlContent)
             val content = wrap(title, cleaned, rawScript)
             val subpages: List<ArticleDescriptor> = parsed.subpages.map(::createLinks).flatten()
-            Article(title, content, subpages)
+            Article(title, url, content, subpages)
         }.fix()
     }
 

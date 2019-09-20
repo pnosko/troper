@@ -19,22 +19,20 @@ import java.io.File
 class ParserUnitTest {
     @Test
     fun parse_notNull() {
-        val parsed = createExampleArticle()
+        val parsed = TestUtils.createExampleArticle()
         assertNotNull(parsed)
     }
 
     @Test
     fun parseAndWrapAndSave() {
-        val wrapped = createExampleArticle()
+        val wrapped = TestUtils.createExampleArticle()
         File("doc.html").writeText(wrapped.content)
-        assertEquals(5, wrapped.subpages.size)
+        assertEquals(5, wrapped.subPages.size)
     }
-
-    private fun createExampleArticle(): Article = Parser.parse(TestArticle.content, TestArticle.script).getOrThrow()
 
     @Test
     fun serializeDeserializeList() {
-        val list = arrayOf(createExampleArticle())
+        val list = arrayOf(TestUtils.createExampleArticle())
         val ser = serialize(list)
         val des = deserializeList<Article>(ser).getOrThrow()
 

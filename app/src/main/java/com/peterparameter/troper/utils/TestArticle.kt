@@ -1327,5 +1327,5 @@ Magic A Is Magic A
 
 
     val content = listOf(top, mid1, mid2, mid3, mid4, mid5, bottom).combineAll(StringContext)
-
+    val url = "https://tvtropes.org/pmwiki/pmwiki.php/Main/MagicAIsMagicA"
 }
