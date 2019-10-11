@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.peterparameter.troper.api.DummyApi
+import com.peterparameter.troper.api.PersistentRetrievalApi
 import com.peterparameter.troper.api.RetrievalApi
 import com.peterparameter.troper.domain.Article
 import com.peterparameter.troper.domain.ArticleLoadedEvent
@@ -12,13 +13,15 @@ import com.peterparameter.troper.domain.ArticleSource
 import com.peterparameter.troper.persistence.ArticleRepository
 import com.peterparameter.troper.persistence.ArticlesDatabase
 import com.peterparameter.troper.persistence.RoomArticleRepository
+import com.peterparameter.troper.utils.DummyTropesApi
 import com.peterparameter.troper.utils.EventBus
+import com.peterparameter.troper.utils.TropesApiImpl
 import kotlinx.coroutines.*
 
 class ArticleViewModel(private val articleSource: ArticleSource) : ViewModel() {
-    // TODO: Inject
-    private val tropesAPI: RetrievalApi = DummyApi()
     private val repository: ArticleRepository = RoomArticleRepository(ArticlesDatabase.invoke())
+    // TODO: Inject
+    private val tropesAPI: RetrievalApi = PersistentRetrievalApi(DummyTropesApi(), repository)
 
     private val articleMutable = MutableLiveData<Article>()
     val article: LiveData<Article> = articleMutable
@@ -49,14 +52,14 @@ class ArticleViewModel(private val articleSource: ArticleSource) : ViewModel() {
     private fun onSuccess(article: Article) {
         articleMutable.value = article
         isLoadingSettable.value = false
-        persistArticle(article)
+//        persistArticle(article)
         notifyArticleLoaded(article)
     }
 
-    private fun persistArticle(article: Article) {
-        // TODO: Error handling, effect mgmt
-        viewModelScope.launch { repository.saveArticle(article) }
-    }
+//    private fun persistArticle(article: Article) {
+//        // TODO: Error handling, effect mgmt
+//        viewModelScope.launch { repository.saveArticle(article) }
+//    }
 
     private fun notifyArticleLoaded(article: Article) {
         EventBus.post(ArticleLoadedEvent(articleSource, article))

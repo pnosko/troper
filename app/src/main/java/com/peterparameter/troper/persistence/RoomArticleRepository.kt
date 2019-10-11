@@ -11,6 +11,8 @@ import kotlinx.coroutines.*
 import splitties.arch.room.inTransaction
 
 class RoomArticleRepository(private val database: ArticlesDatabase) : ArticleRepository {
+    override suspend fun getArticleDescriptorByTitle(title: String): Option<ArticleDescriptor> =
+        database.articlesDao().getDescriptorByTitle(title).toOption()
 
     override suspend fun getArticleDescriptor(id: Long): Option<ArticleDescriptor> = database.articlesDao().getDescriptorById(id).toOption()
 
