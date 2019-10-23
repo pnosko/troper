@@ -1,7 +1,6 @@
 package com.peterparameter.troper.domain
 
 import arrow.core.*
-import arrow.core.extensions.*
 import arrow.core.extensions.option.monad.monad
 import arrow.syntax.collections.flatten
 import com.fcannizzaro.ksoup.Ksoup
@@ -21,8 +20,8 @@ object Parser {
 
             val cleaned = cleanup(htmlContent)
             val content = wrap(title, cleaned, rawScript)
-            val subpages: List<ArticleDescriptor> = parsed.subpages.map(::createLinks).flatten()
-            Article(title, url, content, subpages)
+            val subPages: List<ArticleDescriptor> = parsed.subpages.map(::createLinks).flatten()
+            Article(url, title, content, subPages)
         }.fix()
     }
 
@@ -45,15 +44,11 @@ object Parser {
         return subpage.title.toOption()
             .flatMap { t ->
                 subpage.url.toOption()
-                    .map{ u -> ArticleDescriptor(t, u) }
+                    .map{ u -> ArticleDescriptor(u, t) }
             }
     }
 
-//    private fun removeNBSP(text: String): String {
-//        return text.replace("&nbsp;", "")
-//    }
-
-    private fun wrap(title: String, article: String, rawScript: String?): String {
+    private fun wrap(title: String, article: String, rawScript: String?): String {      // TODO: Oh god, this is ugly
         return "<!DOCTYPE html><html><head lang=\"en\"><title>$title</title></head><body><div>$article</div><script type=\"application/javascript\">$rawScript</script></body></html>"
     }
 }

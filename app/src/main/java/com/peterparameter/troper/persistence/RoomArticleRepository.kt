@@ -6,15 +6,16 @@ import arrow.core.toOption
 import arrow.core.toT
 import com.peterparameter.troper.domain.Article
 import com.peterparameter.troper.domain.ArticleDescriptor
+import com.peterparameter.troper.domain.ArticleInfo
 import com.peterparameter.troper.utils.*
 import kotlinx.coroutines.*
 import splitties.arch.room.inTransaction
 
 class RoomArticleRepository(private val database: ArticlesDatabase) : ArticleRepository {
-    override suspend fun getArticleDescriptorByTitle(title: String): Option<ArticleDescriptor> =
-        database.articlesDao().getDescriptorByTitle(title).toOption()
+    override suspend fun getArticleInfoByUrl(url: String): Option<ArticleInfo> =
+        database.articlesDao().getInfoByUrl(url).toOption()
 
-    override suspend fun getArticleDescriptor(id: Long): Option<ArticleDescriptor> = database.articlesDao().getDescriptorById(id).toOption()
+    override suspend fun getArticleInfoById(id: Long): Option<ArticleInfo> = database.articlesDao().getInfoById(id).toOption()
 
     override suspend fun getAllArticles(): List<Article> {
         val idToArticles =
@@ -34,12 +35,19 @@ class RoomArticleRepository(private val database: ArticlesDatabase) : ArticleRep
         }
     }
 
-    override suspend fun saveArticle(article: Article): Attempt<Id> {
-        val nonExistentSubpages = article.subPages.filter { !exists(it.title) }
+    override suspend fun upsertArticle(article: Article): Attempt<Id> {
+        val existingArticleId = database.articlesDao().getInfoByUrl(article.url)?.id.toOption()
+
+        val nonExistentSubpages = article.subPages.filter { !exists(it.url) }
         val entity = with(article) { ArticleEntity(null, null, url, title, content) }
         return Attempt.catch {
                 database.inTransaction { db ->
-                    val id = db.articlesDao().insert(entity)
+                    val id = if (existingArticleId.nonEmpty()) {
+                        db.articlesDao().update(entity)
+                        existingArticleId.getOrThrow()
+                    } else {
+                        db.articlesDao().insert(entity)
+                    }
                     nonExistentSubpages.map { CompletableDeferred(saveDescriptor(db, id, it)) }.awaitAll()
                     id!!
                 }
@@ -49,23 +57,24 @@ class RoomArticleRepository(private val database: ArticlesDatabase) : ArticleRep
     private suspend fun saveDescriptor(
         db: ArticlesDatabase,
         parentId: Id?,
-        articleDescriptor: ArticleDescriptor
+        articleInfo: ArticleInfo
     ): Attempt<Id> {
         val article =
-            ArticleEntity(null, parentId, articleDescriptor.url, articleDescriptor.title, null)
+            ArticleEntity(null, parentId, articleInfo.url, articleInfo.title, null)
         return Attempt.catch { db.articlesDao().insert(article)!! }
     }
 
-    override suspend fun saveArticleDescriptor(articleDescriptor: ArticleDescriptor): Attempt<Id> {
-        return saveDescriptor(database, null, articleDescriptor)
+    override suspend fun upsertArticleInfo(articleInfo: ArticleInfo): Attempt<Id> {     // TODO: update if exists
+        return saveDescriptor(database, null, articleInfo)
     }
 
     override suspend fun getArticle(id: Id): Option<Article> {
-//        return database.articlesDao().getById(id).toOption().map()
-        TODO("not implemented")
+        val article = database.articlesDao().getById(id).toOption()
+        val subPages = database.articlesDao().getSubPageInfos(id)
+        return article.map { Article(it.url, it.title, it.content.orEmpty(), subPages) }
     }
 
-    private suspend fun exists(title: String): Boolean = database.articlesDao().getDescriptorByTitle(title).toOption().nonEmpty()
+    private suspend fun exists(url: String): Boolean = database.articlesDao().getInfoByUrl(url).toOption().nonEmpty()
 }
 
-fun ArticleEntity.asDescriptor(): ArticleDescriptor = ArticleDescriptor(this.title, this.url)
+fun ArticleEntity.asDescriptor(): ArticleDescriptor = ArticleDescriptor(this.url, this.title)

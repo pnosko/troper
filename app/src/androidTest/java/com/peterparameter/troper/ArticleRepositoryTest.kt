@@ -18,7 +18,7 @@ class ArticleRepositoryTest {
 
     private fun insert(repo: ArticleRepository): Attempt<Id> {
         val article1 = TestUtils1.createExampleArticle()
-        return effect { repo.saveArticle(article1) }.unsafeRunSync()
+        return effect { repo.upsertArticle(article1) }.unsafeRunSync()
     }
 
     private fun createRepo(context: Context) =

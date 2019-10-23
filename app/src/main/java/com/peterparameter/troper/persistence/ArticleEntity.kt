@@ -1,6 +1,7 @@
 package com.peterparameter.troper.persistence
 
 import androidx.room.*
+import com.peterparameter.troper.domain.ArticleInfo
 import java.time.OffsetDateTime
 
 
@@ -19,3 +20,8 @@ data class ArticleEntity (
 }
 
 
+data class ArticleEntityInfo (
+    val id: Long?,
+    override val url: String,
+    override val title: String
+) : ArticleInfo

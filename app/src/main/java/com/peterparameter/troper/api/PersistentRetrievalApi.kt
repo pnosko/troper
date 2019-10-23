@@ -22,9 +22,9 @@ class PersistentRetrievalApi(private val tropesApi: TropesApi, private val repo:
 
     // TODO: refactor, I don't like this syntax; also, possibly push down to Repo impl
     private fun persistIfNotExists(article: Article) =
-        effect { repo.getArticleDescriptorByTitle(article.title).isEmpty() }
+        effect { repo.getArticleInfoByUrl(article.title).isEmpty() }
             .ifM (
-                { effect { repo.saveArticle(article) }.unit() },
+                { effect { repo.upsertArticle(article) }.unit() },
                 { IO.unit }
             )
 }

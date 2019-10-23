@@ -52,14 +52,8 @@ class ArticleViewModel(private val articleSource: ArticleSource) : ViewModel() {
     private fun onSuccess(article: Article) {
         articleMutable.value = article
         isLoadingSettable.value = false
-//        persistArticle(article)
         notifyArticleLoaded(article)
     }
-
-//    private fun persistArticle(article: Article) {
-//        // TODO: Error handling, effect mgmt
-//        viewModelScope.launch { repository.saveArticle(article) }
-//    }
 
     private fun notifyArticleLoaded(article: Article) {
         EventBus.post(ArticleLoadedEvent(articleSource, article))
