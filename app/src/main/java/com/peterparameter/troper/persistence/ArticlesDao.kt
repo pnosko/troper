@@ -11,10 +11,10 @@ interface ArticlesDao {
     @Query("select * from articles where id = :id limit 1")
     suspend fun getById(id: Id): ArticleEntity?
 
-    @Query("select id, url, title from articles where id == :id limit 1")
+    @Query("select id, url, title, isnull(content, false) from articles where id == :id limit 1")
     suspend fun getInfoById(id: Id): ArticleEntityInfo?
 
-    @Query("select id, url, title from articles where url == :url limit 1")
+    @Query("select id, url, title, isnull(content, false) from articles where url == :url limit 1")
     suspend fun getInfoByUrl(url: String): ArticleEntityInfo?
 
     @Query("select id, url, title from articles where parentId == :parentId")

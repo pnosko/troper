@@ -15,11 +15,11 @@ typealias ArticleContent = String
 class TropesApiImpl : TropesApi {
     private val randomUri: Uri = Uri.of("https://tvtropes.org/pmwiki/randomitem.php")
 
-    override fun getRandomArticle(): IO<Article> = getParsedArticle(randomUri)
+    override fun getRandomArticle(): IO<Article> = getArticle(randomUri)
 
     private var mainJS: String? = null
 
-    override fun getParsedArticle(url: Uri): IO<Article> =
+    override fun getArticle(url: Uri): IO<Article> =
           effect { fetchAndParseArticle(url) }
 
     private suspend fun fetchAndParseArticle(url: Uri): Article {

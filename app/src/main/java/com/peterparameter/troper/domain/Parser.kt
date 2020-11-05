@@ -18,14 +18,14 @@ object Parser {
             val element = parsed.article.element.toOption().bind()
             val htmlContent = element.html().toOption().bind()
 
-            val cleaned = cleanup(htmlContent)
+            val cleaned = cleanup(htmlContent).bind()
             val content = wrap(title, cleaned, rawScript)
             val subPages: List<ArticleDescriptor> = parsed.subpages.map(::createLinks).flatten()
             Article(url, title, content, subPages)
         }.fix()
     }
 
-    private fun cleanup(htmlContent: String): String {
+    private fun cleanup(htmlContent: String): Option<String> {
         val urlBase = "https://tvtropes.org"
         val outputSettings = Document.OutputSettings()
             .syntax(Document.OutputSettings.Syntax.html)
@@ -33,7 +33,7 @@ object Parser {
             .prettyPrint(true)
         val whitelist = Whitelist.basicWithImages().addAttributes("*", "id", "class")
         val cleaned = Jsoup.clean(htmlContent, urlBase, whitelist, outputSettings)
-        return cleaned!!
+        return cleaned.toOption()
     }
 
     private fun stripRaw(article: String): String {
@@ -44,7 +44,7 @@ object Parser {
         return subpage.title.toOption()
             .flatMap { t ->
                 subpage.url.toOption()
-                    .map{ u -> ArticleDescriptor(u, t) }
+                    .map{ u -> ArticleDescriptor(u, t, false) }
             }
     }
 

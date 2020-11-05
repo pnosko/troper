@@ -7,10 +7,10 @@ import org.http4k.core.Uri
 
 class DummyTropesApi : TropesApi {
     override fun getRandomArticle(): IO<Article> {
-        return getParsedArticle(Uri.of(""))       // Dude!
+        return getArticle(Uri.of(""))       // Dude!
     }
 
-    override fun getParsedArticle(url: Uri): IO<Article> = Parser.parse(url.toString(), TestArticle.content, TestArticle.script)
+    override fun getArticle(url: Uri): IO<Article> = Parser.parse(url.toString(), TestArticle.content, TestArticle.script)
         .toEither { Error("Could not parse articleSource.") }
         .fold({IO.raiseError(it)}, IO.Companion::just)
 }

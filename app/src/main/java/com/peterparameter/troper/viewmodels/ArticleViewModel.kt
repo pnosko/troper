@@ -4,21 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.peterparameter.troper.api.DummyApi
 import com.peterparameter.troper.api.PersistentRetrievalApi
 import com.peterparameter.troper.api.RetrievalApi
 import com.peterparameter.troper.domain.Article
 import com.peterparameter.troper.domain.ArticleLoadedEvent
 import com.peterparameter.troper.domain.ArticleSource
+import com.peterparameter.troper.domain.ArticleUri
 import com.peterparameter.troper.persistence.ArticleRepository
 import com.peterparameter.troper.persistence.ArticlesDatabase
 import com.peterparameter.troper.persistence.RoomArticleRepository
 import com.peterparameter.troper.utils.DummyTropesApi
 import com.peterparameter.troper.utils.EventBus
-import com.peterparameter.troper.utils.TropesApiImpl
 import kotlinx.coroutines.*
+import org.http4k.core.Uri
 
-class ArticleViewModel(private val articleSource: ArticleSource) : ViewModel() {
+class ArticleViewModel(private val articleSource: ArticleUri) : ViewModel() {
     private val repository: ArticleRepository = RoomArticleRepository(ArticlesDatabase.invoke())
     // TODO: Inject
     private val tropesAPI: RetrievalApi = PersistentRetrievalApi(DummyTropesApi(), repository)
@@ -40,7 +40,7 @@ class ArticleViewModel(private val articleSource: ArticleSource) : ViewModel() {
         this.isLoadingSettable.value = true
         errorSettable.value = null
 
-        val res = viewModelScope.async(Dispatchers.IO) { tropesAPI.retrieve(articleSource).attempt().suspended() }
+        val res = viewModelScope.async(Dispatchers.IO) { tropesAPI.retrieveArticle(Uri.of(articleSource.uri)).attempt().suspended() }
         viewModelScope.launch { res.await().fold(::onError, ::onSuccess) }
     }
 

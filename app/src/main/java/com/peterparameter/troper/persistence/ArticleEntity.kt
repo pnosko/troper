@@ -23,5 +23,6 @@ data class ArticleEntity (
 data class ArticleEntityInfo (
     val id: Long?,
     override val url: String,
-    override val title: String
+    override val title: String,
+    override val isOffline: Boolean
 ) : ArticleInfo

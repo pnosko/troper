@@ -5,6 +5,6 @@ import arrow.fx.IO
 import org.http4k.core.Uri
 
 interface TropesApi {
-    fun getParsedArticle(url: Uri): IO<Article>
+    fun getArticle(url: Uri): IO<Article>
     fun getRandomArticle(): IO<Article>
 }

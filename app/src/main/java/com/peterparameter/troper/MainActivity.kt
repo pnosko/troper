@@ -3,7 +3,6 @@ package com.peterparameter.troper
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.peterparameter.troper.activities.ArticleListActivity
-import com.peterparameter.troper.activities.LoadRandomArticleActivity
 import com.peterparameter.troper.domain.RandomArticle
 import com.peterparameter.troper.view.MainView
 import splitties.arch.lifecycle.ObsoleteSplittiesLifecycleApi

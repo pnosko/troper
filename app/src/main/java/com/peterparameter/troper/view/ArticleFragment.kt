@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.peterparameter.troper.domain.ArticleSource
+import com.peterparameter.troper.domain.ArticleUri
 import com.peterparameter.troper.viewmodels.ArticleViewModel
 import splitties.arch.lifecycle.ObsoleteSplittiesLifecycleApi
 import splitties.arch.lifecycle.fragmentScope
@@ -19,10 +20,10 @@ import kotlin.contracts.ExperimentalContracts
 @ExperimentalContracts
 class ArticleFragment : Fragment() {
     companion object {
-        fun create(articleSource: ArticleSource): ArticleFragment = ArticleFragment().apply { this.articleSource = articleSource }
+        fun create(articleSource: ArticleUri): ArticleFragment = ArticleFragment().apply { this.articleSource = articleSource }
     }
 
-    var articleSource: ArticleSource by arg()
+    var articleSource: ArticleUri by arg()
 
     private val articleVM by fragmentScope{ArticleViewModel(articleSource)}
 
