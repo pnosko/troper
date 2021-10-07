@@ -3,7 +3,6 @@ package com.peterparameter.troper
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.peterparameter.troper.activities.ArticleListActivity
-import com.peterparameter.troper.domain.RandomArticle
 import com.peterparameter.troper.view.MainView
 import splitties.arch.lifecycle.ObsoleteSplittiesLifecycleApi
 import splitties.experimental.InternalSplittiesApi
@@ -27,12 +26,6 @@ class MainActivity : AppCompatActivity(){
     private fun createUi(): Ui {
         val ui = MainView(this)
 
-        ui.random.onClick {
-            start(ArticleListActivity){ _, extrasSpec ->
-                extrasSpec.articles = listOf(RandomArticle)
-            }
-        }
-        ui.favorites.onClick { toast("Favorites!!") }
         return ui
     }
 }

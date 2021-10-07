@@ -27,15 +27,15 @@ class ArticleListView(
     private val s = MaterialComponentsStyles(ctx)
 
     override val root by lazy {
-        TabLayoutMediator(tabLayout, articlePager, ::configureTab).attach()
+//        TabLayoutMediator(tabLayout, articlePager, ::configureTab).attach()
         content
     }
 
-    private val pagerAdapter = ArticlesPagerAdapter(fragmentManager, lifecycle, articleListVM)
-
-    private val articlePager = viewPager {
-        adapter = pagerAdapter
-    }
+//    private val pagerAdapter = ArticlesPagerAdapter(fragmentManager, lifecycle, articleListVM)
+//
+//    private val articlePager = viewPager {
+//        adapter = pagerAdapter
+//    }
 
     private val tabLayout = s.tabLayout.default()
 
@@ -45,14 +45,14 @@ class ArticleListView(
                 width = matchParent
                 height = wrapContent
             })
-            add(articlePager, lParams {
-                width = matchParent
-                height = matchParent
-            })
+//            add(articlePager, lParams {
+//                width = matchParent
+//                height = matchParent
+//            })
         }
     }
 
     private fun configureTab(tab: TabLayout.Tab, position: Int) {
-        tab.text = pagerAdapter.titleForIndex(position).getOrElse { "<LOADING>" }
+//        tab.text = pagerAdapter.titleForIndex(position).getOrElse { "<LOADING>" }
     }
 }

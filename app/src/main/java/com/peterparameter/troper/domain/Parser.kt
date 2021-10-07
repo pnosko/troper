@@ -1,50 +1,43 @@
 package com.peterparameter.troper.domain
 
 import arrow.core.*
-import arrow.core.extensions.option.monad.monad
-import arrow.syntax.collections.flatten
-import com.fcannizzaro.ksoup.Ksoup
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Entities
-import org.jsoup.safety.Whitelist
+import org.jsoup.safety.Safelist
+import com.kevin.ksoup.Ksoup
+import com.peterparameter.troper.utils.Attempt
+import com.peterparameter.troper.utils.flatten
+import com.peterparameter.troper.utils.mapNotNull
+
+object TropesConstants {
+    const val tvTropesBaseUrl = "https://tvtropes.org"
+}
 
 object Parser {
-    fun parse(url: String, rawArticle: String, rawScript: String): Option<Article> {
-        val ks = Ksoup(stripRaw(rawArticle))
-        return Option.monad().fx.monad {
-            val parsed = Try { ks.from<ArticleWrapper>(ArticleWrapper()) }.toOption().bind()
-            val title = parsed.title.toOption().bind()
-            val element = parsed.article.element.toOption().bind()
-            val htmlContent = element.html().toOption().bind()
-
-            val cleaned = cleanup(htmlContent).bind()
-            val content = wrap(title, cleaned, rawScript)
-            val subPages: List<ArticleDescriptor> = parsed.subpages.map(::createLinks).flatten()
-            Article(url, title, content, subPages)
-        }.fix()
+    suspend fun parse(url: String, rawArticle: String): Attempt<Article> {
+        val ks = Ksoup()
+        val parsed = Either.catch { ks.parse<ParsedArticle>(rawArticle, ParsedArticle::class.java) }
+        return parsed.flatMap {
+            val cleanedContent = it.content?.let(::cleanup)
+            val subpages = it.subpages?.map(::createLinks)?.flatten().orEmpty()
+            mapNotNull(it.title, cleanedContent) {t, c -> Article(url, t, c, subpages)}.rightIfNotNull { NullPointerException("title or content is null") }
+        }
     }
 
-    private fun cleanup(htmlContent: String): Option<String> {
-        val urlBase = "https://tvtropes.org"
+    private fun cleanup(htmlContent: String): String {
+        val urlBase = TropesConstants.tvTropesBaseUrl
         val outputSettings = Document.OutputSettings()
             .syntax(Document.OutputSettings.Syntax.html)
             .escapeMode(Entities.EscapeMode.extended)
             .prettyPrint(true)
-        val whitelist = Whitelist.basicWithImages().addAttributes("*", "id", "class")
-        val cleaned = Jsoup.clean(htmlContent, urlBase, whitelist, outputSettings)
-        return cleaned.toOption()
+        val whitelist = Safelist.basicWithImages().addAttributes("*", "id", "class")
+        return Jsoup.clean(htmlContent, urlBase, whitelist, outputSettings)
     }
 
-    private fun stripRaw(article: String): String {
-        return article.replace("<hr>", "")
-    }
-
-    private fun createLinks(subpage: ArticleWrapper.Subpage): Option<ArticleDescriptor> {
-        return subpage.title.toOption()
-            .flatMap { t ->
-                subpage.url.toOption()
-                    .map{ u -> ArticleDescriptor(u, t, false) }
+    private fun createLinks(subpage: ParsedArticle.Subpage): ArticleDescriptor? {
+        return subpage.title?.let { t ->
+                subpage.url?.let{ u -> ArticleDescriptor(u, t) }
             }
     }
 

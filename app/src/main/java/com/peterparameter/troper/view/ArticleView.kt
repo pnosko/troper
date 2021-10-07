@@ -24,7 +24,7 @@ class ArticleView(override val ctx: Context) : Ui {
         }
 
     fun setup(article: Article) {
-        articleContentView.loadData(article.content, "text/html", "UTF-8")
+        articleContentView.loadData(article.content!!, "text/html", "UTF-8")
         title.text = article.title
     }
 

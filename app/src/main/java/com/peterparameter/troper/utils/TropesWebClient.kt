@@ -3,8 +3,6 @@ package com.peterparameter.troper.utils
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.peterparameter.troper.domain.AddArticleCommand
-import com.peterparameter.troper.domain.ArticleUri
 import org.http4k.core.Uri
 import java.util.regex.Pattern
 
@@ -22,7 +20,6 @@ class TropesWebClient : WebViewClient() {
 
     private fun addNewArticle(url: String) {
         // TODO: Use VM to dispatch event!
-        EventBus.post(AddArticleCommand(ArticleUri(url)))
     }
 
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {

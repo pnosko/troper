@@ -1,12 +1,10 @@
 package com.peterparameter.troper.utils
 
-import arrow.fx.IO
-import arrow.fx.IO.Companion.effect
-import com.peterparameter.troper.domain.Article
-import com.peterparameter.troper.domain.Parser
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import org.http4k.client.JettyClient
+import arrow.core.Either
+import arrow.core.getOrHandle
+import com.peterparameter.troper.api.TropesApi
+import com.peterparameter.troper.domain.*
+import org.http4k.client.OkHttp
 import org.http4k.core.*
 import org.http4k.filter.ClientFilters
 
@@ -15,42 +13,18 @@ typealias ArticleContent = String
 class TropesApiImpl : TropesApi {
     private val randomUri: Uri = Uri.of("https://tvtropes.org/pmwiki/randomitem.php")
 
-    override fun getRandomArticle(): IO<Article> = getArticle(randomUri)
-
-    private var mainJS: String? = null
-
-    override fun getArticle(url: Uri): IO<Article> =
-          effect { fetchAndParseArticle(url) }
-
     private suspend fun fetchAndParseArticle(url: Uri): Article {
-        val articleContent = fetchArticleContentAsync(url)
-        return Parser.parse(url.toString(), articleContent, "").getOrThrow()
+        val articleContent = fetchArticleContent(url)
+        return Parser.parse(url.toString(), articleContent).getOrHandle{ e -> throw e }
     }
 
-//    private suspend fun fetchScript(): Try<String> {
-//        return if (mainJS.toOption().exists { it.isNotBlank() })
-//            Try.Success(mainJS!!)
-//        else {
-//            val script = fetchMainScriptAsync().await()
-//            if (script.isSuccess())
-//                mainJS = script.toOption().getOrThrow()
-//            script
-//        }
-//    }
+    private suspend fun fetchArticleContent(url: Uri): ArticleContent {
+        val client = ClientFilters.FollowRedirects().then(OkHttp())
+        val request = Request(Method.GET, url)
+        return client(request).bodyString()
+    }
 
-    private suspend fun fetchArticleContentAsync(url: Uri): ArticleContent =
-        withContext(Dispatchers.IO) {
-            val client = ClientFilters.FollowRedirects().then(JettyClient())
-            val request = Request(Method.GET, url)
-            client(request).bodyString()
-        }
-
-//    private fun fetchMainScriptAsync(): Deferred<Try<String>> =
-//        bg {
-//            val url = Uri.of("https://static.tvtropes.org/main.js")
-//            val client = JettyClient()
-//            val request = Request(Method.GET, url)
-//            val response = Try { client(request) }
-//            response.map { it.bodyString() }.filter { it.isNotEmpty() }
-//        }
+    override suspend fun retrieveArticle(source: Uri): Attempt<Article> {
+        return Either.Left(NotImplementedError())
+    }
 }
