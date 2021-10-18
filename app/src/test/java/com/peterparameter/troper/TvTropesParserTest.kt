@@ -1,13 +1,11 @@
 package com.peterparameter.troper
 
 import com.peterparameter.troper.domain.Parser
-import com.peterparameter.troper.utils.*
+import com.peterparameter.troper.utils.notNull
 import kotlinx.coroutines.runBlocking
-import org.junit.Test
-
 import org.junit.Before
+import org.junit.Test
 import java.io.File
-import java.sql.DriverManager.println
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -30,7 +28,12 @@ class TvTropesParserTest {
                 Parser.parse("", articleText.orEmpty())
             }
         assert(parsed.isRight())
-        assert(parsed.exists { it.content?.notNull()!! })
+        assert(parsed.exists { it.content.notNull() })
+        writeToFile(parsed.orNull()?.content!!)
+    }
+
+    private fun writeToFile(content: String) {
+        File("out/article.html").writeText(content)
     }
 
     @Test
@@ -41,6 +44,5 @@ class TvTropesParserTest {
             }
         assert(parsed.isRight())
         assert(parsed.exists { it.subPages.isNotEmpty() })
-        println(parsed.map{it.content}.orNull())
     }
 }

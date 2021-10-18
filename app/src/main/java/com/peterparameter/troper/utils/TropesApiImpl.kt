@@ -5,6 +5,7 @@ import arrow.core.getOrHandle
 import com.peterparameter.troper.api.TropesApi
 import com.peterparameter.troper.domain.*
 import org.http4k.client.OkHttp
+import android.net.Uri as LegacyUri
 import org.http4k.core.*
 import org.http4k.filter.ClientFilters
 
@@ -24,7 +25,7 @@ class TropesApiImpl : TropesApi {
         return client(request).bodyString()
     }
 
-    override suspend fun retrieveArticle(source: Uri): Attempt<Article> {
+    override suspend fun retrieveArticle(source: LegacyUri): Attempt<Article> {
         return Either.Left(NotImplementedError())
     }
 }

@@ -13,6 +13,7 @@ fun <T> List<T>.zipWithIndex(): List<Pair<T, Int>> = this.zip(0.rangeTo(this.siz
 fun <T> T?.isNull(): Boolean = this === null
 fun <T> T?.notNull(): Boolean = !this.isNull()
 fun <T> List<T?>.flatten(): List<T> = this.mapNotNull(::identity)
+fun String.nullIfEmpty(): String? = if (this.isNullOrEmpty()) null else this
 
 fun <T, U, R> mapNotNull(t: T?, u: U?, func: (T, U) -> R): R? = t?.let{ tt -> u?.let { uu -> func(tt, uu) } }
 fun <T, U, V, R> mapNotNull(t: T?, u: U?, v: V?, func: (T, U, V) -> R): R? = t?.let{ tt -> u?.let { uu -> v?.let { vv -> func(tt, uu, vv) } } }
