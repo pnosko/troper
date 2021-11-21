@@ -15,16 +15,6 @@ inline fun <reified T : Fragment> instanceOf(vararg params: Pair<String, Any>)
 typealias Attempt<T> = Either<Throwable, T>
 typealias Id = Long
 
-object Attempts {
-    fun <T> eagerCatch(f: () -> T): Attempt<T> {
-        return try {
-            f().right()
-        } catch (t: Throwable) {
-            t.nonFatalOrThrow().left()
-        }
-    }
-}
-
 //inline fun <reified T> serialize(contents: T): String? = Json.encodeToString<T>(contents)
 inline fun <reified T> deserialize(contents: String): T? = Either.catch { Json.decodeFromString<T>(contents) }.orNull()
-inline fun <reified T> deserializeList(contents: String): List<T>? = Json.decodeFromString<List<T>>(contents)
+inline fun <reified T> deserializeList(contents: String): List<T> = Json.decodeFromString(contents)

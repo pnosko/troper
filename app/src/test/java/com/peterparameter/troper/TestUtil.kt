@@ -1,5 +1,8 @@
 package com.peterparameter.troper
 
+import java.io.File
+
 object TestUtil {
-    fun println(message: String) = System.out.println(message)
+    fun loadResource(filename: String): String =
+        File(TestConstants.resourceFolder + filename).readText()
 }

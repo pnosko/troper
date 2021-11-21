@@ -1,19 +1,20 @@
 package com.peterparameter.troper.domain
 
-import arrow.core.*
+import arrow.core.Either
+import arrow.core.flatMap
+import arrow.core.rightIfNotNull
+import com.kevin.ksoup.Ksoup
+import com.peterparameter.troper.utils.Attempt
+import com.peterparameter.troper.utils.flatten
+import com.peterparameter.troper.utils.mapNotNull
+import com.peterparameter.troper.utils.nullIfEmpty
+import daggerok.extensions.html.dom.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Entities
 import org.jsoup.safety.Safelist
-import com.kevin.ksoup.Ksoup
-import com.peterparameter.troper.utils.*
-import daggerok.extensions.html.dom.*
 
-object TropesConstants {
-    const val tvTropesBaseUrl = "https://tvtropes.org"
-}
-
-object Parser {
+object ArticleParser {
     suspend fun parse(url: String, rawArticle: String): Attempt<Article> {
         val ks = Ksoup()
         val parsed = Either.catch { ks.parse<ParsedArticle>(rawArticle) }
@@ -43,7 +44,7 @@ object Parser {
             }
     }
 
-    private fun wrap(title: String, article: String): String {      // TODO: Oh god, this is ugly
+    private fun wrap(title: String, article: String): String {
         return html {
             head {
                 meta("charset" to "UTF-8")
