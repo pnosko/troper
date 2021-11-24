@@ -2,6 +2,8 @@ package com.peterparameter.troper.domain
 
 import com.kevin.ksoup.Attrs
 import com.kevin.ksoup.annontation.Pick
+import org.jsoup.nodes.Element
+import org.jsoup.select.Elements
 
 @Pick("#main-content")
 class ParsedArticle {
@@ -11,16 +13,6 @@ class ParsedArticle {
 
         @Pick("a.subpage-link", Attrs.HREF)
         val url: String? = null
-    }
-
-    class FolderLabel {
-        @Pick("")
-        var title: String? = null
-    }
-
-    class Folder {
-        @Pick("", Attrs.HTML)
-        var content: String? = null
     }
 
     @Pick("div.article-content div.indent", Attrs.HTML)
@@ -41,15 +33,18 @@ class ParsedArticle {
     @Pick("div#main-article", Attrs.HTML)
     var content: String? = null
 
+    @Pick("div#main-article", Attrs.HTML)
+    var contentElement: Element? = null
+
     @Pick(".entry-title")
     var title: String? = null
 
     @Pick("a.subpage-link")
     var subpages: List<Subpage>? = null
 
-    @Pick("div.folderlabel")
-    var folderlabels: List<FolderLabel>? = null
+    @Pick("div.folderlabel :not(.toggle-all-folders-button)")
+    var folderlabels: Elements? = null
 
     @Pick("div.folder")
-    var folders: List<Folder>? = null
+    var folders: Elements? = null
 }

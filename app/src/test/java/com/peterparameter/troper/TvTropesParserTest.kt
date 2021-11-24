@@ -12,7 +12,7 @@ class TvTropesParserTest {
 
     @Before
     fun setup() {
-        articleText = File(TestConstants.articleFilename).readText()
+        articleText = TestUtil.loadResource(TestConstants.articleFilename)
     }
 
     @Test

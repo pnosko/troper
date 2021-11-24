@@ -7,7 +7,9 @@ import com.overzealous.remark.*
 object Html2MarkdownConverter {
     fun convert(htmlContent: String): Attempt<String> {
         return Either.catch {
-            Remark().convertFragment(htmlContent)
+            val opt = Options.markdownExtra()
+            opt.inlineLinks = true
+            Remark(opt).convertFragment(htmlContent)
         }
     }
 }
