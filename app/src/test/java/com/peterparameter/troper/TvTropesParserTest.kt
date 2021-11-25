@@ -25,7 +25,7 @@ class TvTropesParserTest {
             }
         assert(parsed.isRight())
         assert(parsed.exists { it.content.notNull() })
-        writeToFile(parsed.orNull()?.content!!)
+        writeToFile(parsed.orNull()?.content!!, "article.html")
     }
 
     @Test
@@ -36,11 +36,11 @@ class TvTropesParserTest {
             }
         assert(parsed.isRight())
         assert(parsed.exists { it.content.notNull() })
-        writeToFile(parsed.orNull()?.content!!)
+        writeToFile(parsed.orNull()?.content!!, "article2.html")
     }
 
-    private fun writeToFile(content: String) {
-        File("out/article.html").writeText(content)
+    private fun writeToFile(content: String, fname: String) {
+        File("out/$fname").writeText(content)
     }
 
     @Test

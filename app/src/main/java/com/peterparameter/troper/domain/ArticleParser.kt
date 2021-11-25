@@ -7,7 +7,6 @@ import arrow.core.flatMap
 import com.kevin.ksoup.Ksoup
 import com.peterparameter.troper.utils.Attempt
 import com.peterparameter.troper.utils.flatten
-import com.peterparameter.troper.utils.mapNotNull
 import com.peterparameter.troper.utils.orElse
 import daggerok.extensions.html.dom.*
 import org.jsoup.Jsoup
@@ -27,23 +26,36 @@ object ArticleParser {
     }
 
     private fun cleanArticleContent(parsedArticle: ParsedArticle): ParsedArticle {
-        // remove folders and labels from mail article
-//        parsedArticle.contentElement?.select(".folderlabel, .folder")?.remove()
+        // remove "collapse all"
+        parsedArticle.contentElement?.select("div.folderlabel.toggle-all-folders-button")?.remove()
+        parsedArticle.contentElement?.select("img[src=https://static.tvtropes.org/pmwiki/pub/external_link.gif]")?.remove()
+
+        parsedArticle.contentElement?.select("div.proper-ad-unit")?.remove()
+        parsedArticle.contentElement?.select(".ad")?.remove()
+        parsedArticle.contentElement?.select("span.ad-caption")?.remove()
+
         // fix indented quotes
-        parsedArticle.contentElement?.let(::fixQuotes)
-        parsedArticle.contentElement?.select(".ad, span :contains(Advertisement)")?.remove()
+        parsedArticle.contentElement?.select("div.indent")?.forEach {
+            it.replaceWith(Element(Tag.valueOf("blockquote"), "").html(it.html()))
+        }
+
+        // fix folders
         val labels = parsedArticle.labels.orElse(Elements())
         val folders = parsedArticle.folders.orElse(Elements())
-
         labels.zip(folders).forEach { (l, f) ->
             f.replaceWith(Element("folder").attr("title", l.text()).html(f.html()))
         }
         labels.remove()
 
+        // fix spoilers
+        parsedArticle.contentElement?.select("span.spoiler")?.forEach {
+            it.replaceWith(Element("spoiler").html(it.html()))
+        }
+
+        parsedArticle.content = parsedArticle.contentElement?.html()
+
         return parsedArticle
     }
-
-    private fun fixQuotes(element: Element) = element.select("div.indent").forEach { it.replaceWith(Element(Tag.valueOf("blockquote"), "").html(it.html())) }
 
     private suspend fun createArticle(
         parsed: ParsedArticle,
@@ -56,7 +68,7 @@ object ArticleParser {
             val content = cleanedContent.bind()
             val title = parsed.title.bind()
             val converted = Html2MarkdownConverter.convert(content)
-            converted.map { Article(url, title, it, parsed.category!!, subpages) }
+            converted.map { Article(url, title, parsed.category!!, it, subpages) }
         }?.bind()!!     // TODO: refactor
     }
 
