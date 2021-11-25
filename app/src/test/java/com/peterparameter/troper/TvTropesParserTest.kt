@@ -9,10 +9,12 @@ import java.io.File
 
 class TvTropesParserTest {
     private var articleText: String? = null
+    private var article2Text: String? = null
 
     @Before
     fun setup() {
         articleText = TestUtil.loadResource(TestConstants.articleFilename)
+        article2Text = TestUtil.loadResource("article2.html")
     }
 
     @Test
@@ -20,6 +22,17 @@ class TvTropesParserTest {
         val parsed =
             runBlocking {
                 ArticleParser.parse("", articleText.orEmpty())
+            }
+        assert(parsed.isRight())
+        assert(parsed.exists { it.content.notNull() })
+        writeToFile(parsed.orNull()?.content!!)
+    }
+
+    @Test
+    fun parse_article2_notNull() {
+        val parsed =
+            runBlocking {
+                ArticleParser.parse("", article2Text.orEmpty())
             }
         assert(parsed.isRight())
         assert(parsed.exists { it.content.notNull() })

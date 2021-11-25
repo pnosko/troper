@@ -7,6 +7,8 @@ import arrow.core.flatMap
 import com.kevin.ksoup.Ksoup
 import com.peterparameter.troper.utils.Attempt
 import com.peterparameter.troper.utils.flatten
+import com.peterparameter.troper.utils.mapNotNull
+import com.peterparameter.troper.utils.orElse
 import daggerok.extensions.html.dom.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -14,6 +16,7 @@ import org.jsoup.nodes.Element
 import org.jsoup.nodes.Entities
 import org.jsoup.parser.Tag
 import org.jsoup.safety.Safelist
+import org.jsoup.select.Elements
 
 object ArticleParser {
     suspend fun parse(url: String, rawArticle: String): Attempt<Article> {
@@ -28,9 +31,14 @@ object ArticleParser {
 //        parsedArticle.contentElement?.select(".folderlabel, .folder")?.remove()
         // fix indented quotes
         parsedArticle.contentElement?.let(::fixQuotes)
-        parsedArticle.contentElement?.select(".ad")?.remove()
-        parsedArticle.contentElement?.select("span :contains(Advertisement)")?.remove()
-//        parsedArticle.folders?.forEach { it?.let(::fixQuotes) }
+        parsedArticle.contentElement?.select(".ad, span :contains(Advertisement)")?.remove()
+        val labels = parsedArticle.labels.orElse(Elements())
+        val folders = parsedArticle.folders.orElse(Elements())
+
+        labels.zip(folders).forEach { (l, f) ->
+            f.replaceWith(Element("folder").attr("title", l.text()).html(f.html()))
+        }
+        labels.remove()
 
         return parsedArticle
     }

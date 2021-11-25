@@ -68,10 +68,14 @@ class Html2MarkdownConverterTest {
 
     @Test
     fun folder() {
-        val text = TestUtil.loadResource("foldersection.html")
+        val text = """<folder title="folder no. 1"><ul><li><em>haha</em></li><li><em>lol</em></li></ul></folder>"""
+        val expected = """<details>
+<summary>folder no. 1</summary>
+ *  *haha*
+ *  *lol*
+</details>"""
         val converted = Html2MarkdownConverter.convert(text)
-
-        File("out/foldersection.md").writeText(converted.orNull()!!)
+        assertEquals(expected, converted.orNull()!!)
     }
 
     @Test

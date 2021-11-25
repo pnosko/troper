@@ -94,9 +94,9 @@ dependencies {
     implementation "org.http4k:http4k-core:$http4k_version" //optional
     implementation "org.http4k:http4k-client-okhttp:$http4k_version" //optional
 
-    implementation "com.kotcrab.remark:remark:1.2.0"
+//    implementation "com.kotcrab.remark:remark:1.2.0"
 
     implementation "org.jetbrains.kotlinx:kotlinx-html-jvm:$kotlinx_html_version"
 //    implementation "com.zwenkai:ksoup:$ksoup_version"
-    implementation 'org.jsoup:jsoup:1.14.2'
+    implementation 'org.jsoup:jsoup:1.14.3'
 }

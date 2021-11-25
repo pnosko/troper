@@ -15,10 +15,10 @@ class ParsedArticle {
         val url: String? = null
     }
 
-    @Pick("div.article-content div.indent", Attrs.HTML)
+    @Pick("div.article-content div.indent :first", Attrs.HTML)
     var quote: String? = null
 
-    @Pick("div.quoteright div img.embeddedimage", Attrs.SRC)
+    @Pick("div.quoteright>div>img.embeddedimage", Attrs.SRC)
     var imageUrl: String? = null
 
     @Pick("div.acaptionright", Attrs.HTML)
@@ -43,7 +43,7 @@ class ParsedArticle {
     var subpages: List<Subpage>? = null
 
     @Pick("div.folderlabel :not(.toggle-all-folders-button)")
-    var folderlabels: Elements? = null
+    var labels: Elements? = null
 
     @Pick("div.folder")
     var folders: Elements? = null
