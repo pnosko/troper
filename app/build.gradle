@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+//    id "org.jetbrains.compose" version "v1.0.0-rc5"
+
 }
 
 android {
@@ -51,6 +53,8 @@ def accompanist_version = "0.21.0-beta"
 def room_version = "2.3.0"
 def kotlin_html = "1.0.ALL"
 def markwon_version = "4.6.2"
+def richtext_version = "0.9.0"
+def compose_version = "1.1.0-beta3"
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -70,7 +74,17 @@ dependencies {
 //    kapt "androidx.room:room-compiler:$room_version"
 
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
-    implementation 'com.google.android.material:material:1.4.0'
+
+    // Compose
+    implementation "androidx.compose.material:material:1.0.5"
+    implementation "androidx.compose.runtime:runtime:$compose_version"
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.foundation:foundation-layout:1.0.5"
+    implementation "androidx.compose.material:material:$compose_version"
+//    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation "androidx.compose.foundation:foundation:$compose_version"
+    runtimeOnly 'org.jetbrains.compose.material:material:1.0.0-rc2'
+
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.4.0'
@@ -95,6 +109,10 @@ dependencies {
     implementation "org.http4k:http4k-client-okhttp:$http4k_version" //optional
 
 //    implementation "com.kotcrab.remark:remark:1.2.0"
+
+//    implementation "com.halilibo.compose-richtext:richtext-commonmark:${richtext_version}"
+    implementation "com.halilibo.compose-richtext:richtext-ui:${richtext_version}"
+    implementation "com.halilibo.compose-richtext:richtext-ui-material:${richtext_version}"
 
     implementation "org.jetbrains.kotlinx:kotlinx-html-jvm:$kotlinx_html_version"
 //    implementation "com.zwenkai:ksoup:$ksoup_version"

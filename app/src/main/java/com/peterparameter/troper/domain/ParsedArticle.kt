@@ -31,9 +31,6 @@ class ParsedArticle {
     var currentUrl: String? = null
 
     @Pick("div#main-article", Attrs.HTML)
-    var content: String? = null
-
-    @Pick("div#main-article", Attrs.HTML)
     var contentElement: Element? = null
 
     @Pick(".entry-title")

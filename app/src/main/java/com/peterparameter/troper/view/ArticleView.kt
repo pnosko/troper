@@ -1,23 +1,60 @@
 package com.peterparameter.troper.view
 
-import android.content.Context
-import android.view.View
-import androidx.compose.runtime.Composable
-import androidx.core.view.isVisible
+import android.widget.Toast
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.darkColors
+import androidx.compose.material.lightColors
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import com.halilibo.richtext.markdown.Markdown
+import com.halilibo.richtext.ui.RichTextStyle
+import com.halilibo.richtext.ui.material.MaterialRichText
+import com.halilibo.richtext.ui.resolveDefaults
 import com.peterparameter.troper.domain.Article
-import com.peterparameter.troper.utils.TropesWebClient
-import com.peterparameter.troper.utils.webView
-import splitties.experimental.InternalSplittiesApi
-import splitties.views.dsl.core.*
-import splitties.views.dsl.core.styles.AndroidStyles
-import splitties.views.gravityCenter
-import kotlin.contracts.ExperimentalContracts
 
 @Composable
 fun ArticleView(state: ArticleState) {
 
 }
 
+@Composable
+fun ArticleContentView(article: Article) {
+    var richTextStyle by remember { mutableStateOf(RichTextStyle().resolveDefaults()) }
+    var isDarkModeEnabled by remember { mutableStateOf(false) }
+
+    val colors = if (isDarkModeEnabled) darkColors() else lightColors()
+    val context = LocalContext.current
+
+    MaterialTheme(colors = colors) {
+        Surface {
+            Column {
+                SelectionContainer {
+                    Column(Modifier.verticalScroll(rememberScrollState())) {
+                        MaterialRichText(
+                            style = richTextStyle,
+                            modifier = Modifier.padding(8.dp),
+                        ) {
+                            Markdown(
+                                content = article.content,
+                                onLinkClicked = {
+                                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 class ArticleState {
 
 }

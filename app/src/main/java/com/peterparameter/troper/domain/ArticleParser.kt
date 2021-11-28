@@ -52,8 +52,6 @@ object ArticleParser {
             it.replaceWith(Element("spoiler").html(it.html()))
         }
 
-        parsedArticle.content = parsedArticle.contentElement?.html()
-
         return parsedArticle
     }
 
@@ -61,26 +59,14 @@ object ArticleParser {
         parsed: ParsedArticle,
         url: String
     ): Attempt<Article> = either {
-        val cleanedContent = parsed.content
+        val cleanedContent = parsed.contentElement?.html()
         val subpages = parsed.subpages?.map(::createLinks)?.flatten().orEmpty()
-        //val folders = parsed.folderlabels?.zip(parsed.folders).forEach { (label, folder) ->  }
         nullable {
             val content = cleanedContent.bind()
             val title = parsed.title.bind()
             val converted = Html2MarkdownConverter.convert(content)
             converted.map { Article(url, title, parsed.category!!, it, subpages) }
         }?.bind()!!     // TODO: refactor
-    }
-
-    private fun cleanup(htmlContent: String): String {
-        val advertisementSpan = "<span>Advertisement:</span>"
-        val urlBase = TropesConstants.tvTropesBaseUrl
-        val outputSettings = Document.OutputSettings()
-            .syntax(Document.OutputSettings.Syntax.html)
-            .escapeMode(Entities.EscapeMode.extended)
-        val whitelist = Safelist.relaxed().addAttributes("div", "id", "class")
-        return Jsoup.clean(htmlContent, urlBase, whitelist, outputSettings)
-            .replace(advertisementSpan, "")
     }
 
     private fun createLinks(subpage: ParsedArticle.Subpage): ArticleReference? {
